@@ -3,7 +3,7 @@ import MySQLdb
 # Make the connection
 connection = MySQLdb.connect(host='localhost',user='bcrowthe',passwd='Mu7YlQr2',db='bcrowthe')
 
-sql = "call getquote()"
+sql = "call ()" #TODO procedure
 
 # Run query and get result
 try:

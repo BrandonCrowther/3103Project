@@ -7,13 +7,25 @@ app = Flask(__name__)
 def start():
     return "I love Python!\n"
 
-@app.route("/user/<name>")
-def hello(name):
-    return "Well, hello <strong> %s"  % name +"!</strong></br>\n"
+# get all issues in collection
+@app.route("/collection/<int:collection_id>")
+def get_collection(collection_id):
+    return "TODO"
 
-@app.route("/user/<name>/<int:value>")
-def squareRoot(name, value):
-    return "Thanks %s"  % name + " The square root of %f" % value + " is %f" % math.sqrt(value) + "\n"
+# get all issues owned by the user in a series
+@app.route("/user/<int:user_id>/series/<int:series_id>")
+def get_issues_from_series(user_id, series_id):
+    return "TODO"
+
+# get all issues owned by the user from a publisher
+@app.route("user/<int:user_id>/publisher/<int:publisher_id>")
+def get_issues_from_publisher(user_id, publisher_id):
+    return "TODO"
+
+# add an issue to a user's registry
+@app.route("/user/<int:user_id>/add_issue")
+def add_issue(name, value):
+    return "TODO"
 
 
 @app.errorhandler(404)

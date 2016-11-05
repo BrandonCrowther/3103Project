@@ -6,12 +6,12 @@ import MySQLdb
 app = Flask(__name__)
 @app.route("/")
 def start():
-    return "I love Python!\n"
+    return "COMIC SERVICE INITIATED\n"
 
 # get all issues in collection
 @app.route("/collection/<int:collection_id>")
 def get_collection(collection_id):
-    return call_db(make_query("getquote"))
+    return build_response("get_collection", collection_id)
 
 # get all issues owned by the user in a series
 @app.route("/user/<int:user_id>/series/<int:series_id>")
@@ -33,6 +33,13 @@ def add_issue(name, value):
 def not_found(error):
     return make_response("<p>Say what?</p>\n", 404)
 
+####################
+## HELPER METHODS ##
+####################
+
+# call the db on a query
+def build_response(function, *args)):
+    return make_response(call_db(make_query(function, *args))) + "\n"
 
 # build query string and call the db using a specified function
 def make_query(function, *args):

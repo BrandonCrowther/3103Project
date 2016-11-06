@@ -90,7 +90,8 @@ class SignIn(Resource):
 				# At this point we have sucessfully authenticated.
 
 				session['username'] = request_params['username']
-				response = {'status': 'success' }
+				response = {'status': 'success', 'username': session['username'] }
+				print "SESSION CREATED: " + session['username']
 				responseCode = 201
 			except ldap.LDAPError, error_message:
 				response = {'status': 'Access denied', 'error': str(error_message)}

@@ -21,53 +21,43 @@ app.config['SESSION_COOKIE_DOMAIN'] = APP_HOST
 Session(app)
 
 ## Routing ##
-@app.route("/")
-def start():
-    return "Wow this is the default directory!\n"
+class StandardErrors(Resource):
+    @app.route("/")
+    def start():
+        return "Wow this is the default directory!\n"
+
+    @app.errorhandler(404)
+    def not_found(error):
+        return make_response("404 Not Found\n", 404)
+
 
 # Comics
-@app.route("/comics/")
-def get_comics():
-    return build_response("get_comics")
+class Comics(Resource):
+    @app.route("/comics/")
+    def get_comics():
+        return build_response_auth("get_comics")
 
-@app.route("/comics/<int:comic_id>")
-def get_comic(comic_id):
-    return build_response("get_comic", comic_id)
+    @app.route("/comics/<int:comic_id>")
+    def get_comic(comic_id):
+        return build_response("get_comic", comic_id)
 
-@app.route("/comics/series/<int:series_id>")
-def get_issues_from_series(series_id):
-    return build_response("get_issues_from_series", series_id)
+    @app.route("/comics/series/<int:series_id>")
+    def get_issues_from_series(series_id):
+        return build_response("get_issues_from_series", series_id)
 
-@app.route("/comics/publisher/<int:publisher_id>")
-def get_issues_from_publisher(publisher_id):
-    return build_response("get_issues_from_publisher", publisher_id)
+    @app.route("/comics/publisher/<int:publisher_id>")
+    def get_issues_from_publisher(publisher_id):
+        return build_response("get_issues_from_publisher", publisher_id)
 
-@app.route("/comics/writer/<int:writer_id>")
-def get_issues_from_writer(writer_id):
-    return build_response("get_issues_from_writer", writer_id)
+    @app.route("/comics/writer/<int:writer_id>")
+    def get_issues_from_writer(writer_id):
+        return build_response("get_issues_from_writer", writer_id)
 
-@app.errorhandler(404)
-def not_found(error):
-    return make_response("404 Not Found\n", 404)
 
-####################################################################################
-#
-# Routing: GET and POST using Flask-Session
-#
-# Demonstration only!
-#
 class SignIn(Resource):
-	#
-	# Login, start a session and get session cookie
-	#
-	# Example curl command:
-	# curl -i -H "Content-Type: application/json" -X POST -d '{"username": "Casper", "password": "c\*ap"}' -c cookie-jar http://info3103.cs.unb.ca:61340/signin
-	#
 	def post(self):
-
 		if not request.json:
 			abort(400) # bad request
-
 		# Parse the json
 		parser = reqparse.RequestParser()
  		try:
@@ -101,20 +91,14 @@ class SignIn(Resource):
 
 		return make_response(jsonify(response), responseCode)
 
-	# GET: Check for a login
-	#
-	# Example curl command:
-	# curl -i -H "Content-Type: application/json" -X GET -b cookie-jar
-	#	http://info3103.cs.unb.ca:61340/signin
+    # Unused
 	def get(self):
-		success = False
 		if 'username' in session:
 			response = {'status': 'success'}
 			responseCode = 200
 		else:
 			response = {'status': 'fail'}
 			responseCode = 403
-
 		return make_response(jsonify(response), responseCode)
 
 	# DELETE: Logout: remove session
@@ -122,16 +106,18 @@ class SignIn(Resource):
 	# Example curl command:
 	# curl -i -H "Content-Type: application/json" -X DELETE -b cookie-jar
 	#	http://info3103.cs.unb.ca:61340/signin
+    def delete(self):
+        if 'username' in session:
+            del session['username']
+            response = {'status': 'success'}
+            responseCode = 200
+        else:
+            response = {'status': 'fail'}
+            responseCode = 403
+        return make_response(jsonify(response), responseCode)
 
-	#
-	#	Here's your chance to shine!
-	#
 
 
-####################################################################################
-#
-# Identify/create endpoints and endpoint objects
-#
 api = Api(app)
 api.add_resource(SignIn, '/signin')
 

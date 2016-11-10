@@ -33,32 +33,40 @@ class StandardErrors(Resource):
 
 # Comics
 class Comics(Resource):
-    @app.route("/comics/")
-    def get_comics():
-        return build_response_auth("get_comics")
+    @app.route("/comics/", METHODS=['GET', 'POST'])
+    def comics():
+        if request.method == 'GET':
+            return build_response_auth("get_comics")
+        else if request.method == 'POST'
+            return build_response_auth("add_comic")
 
-    @app.route("/comics/<int:comic_id>")
+    @app.route("/comics/<int:comic_id>", METHODS=['GET', 'UPDATE', 'DELETE'])
     def get_comic(comic_id):
-        return build_response("get_comic", comic_id)
+        if request.method == 'GET':
+            return build_response_auth("get_comic", comic_id)
+        else if request.method == 'UPDATE'
+            return build_response_auth("update_comic", comic_id, request_params['comic'])
+        else if request.method == 'DELETE'
+            return build_response_auth("delete_comic", comic_id)
 
-    @app.route("/comics/series/<int:series_id>")
-    def get_issues_from_series(series_id):
-        return build_response("get_issues_from_series", series_id)
-
-    @app.route("/comics/publisher/<int:publisher_id>")
-    def get_issues_from_publisher(publisher_id):
-        return build_response("get_issues_from_publisher", publisher_id)
-
-    @app.route("/comics/writer/<int:writer_id>")
-    def get_issues_from_writer(writer_id):
-        return build_response("get_issues_from_writer", writer_id)
+    # add this back later
+    # @app.route("/comics/series/<int:series_id>")
+    # def get_issues_from_series(series_id):
+    #     return build_response("get_issues_from_series", series_id)
+    #
+    # @app.route("/comics/publisher/<int:publisher_id>")
+    # def get_issues_from_publisher(publisher_id):
+    #     return build_response("get_issues_from_publisher", publisher_id)
+    #
+    # @app.route("/comics/writer/<int:writer_id>")
+    # def get_issues_from_writer(writer_id):
+    #     return build_response("get_issues_from_writer", writer_id)
 
 
 class SignIn(Resource):
 	def post(self):
 		if not request.json:
-			abort(400) # bad request
-		# Parse the json
+			abort(400)
 		parser = reqparse.RequestParser()
  		try:
  			# Check for required attributes in json document, create a dictionary
@@ -66,8 +74,7 @@ class SignIn(Resource):
 			parser.add_argument('password', type=str, required=True)
 			request_params = parser.parse_args()
 		except:
-			abort(400) # bad request
-
+			abort(400)
 		if request_params['username'] in session:
 			response = {'status': 'success'}
 			responseCode = 200
@@ -91,7 +98,7 @@ class SignIn(Resource):
 
 		return make_response(jsonify(response), responseCode)
 
-    # Unused
+    # Unused, but available for curling
 	def get(self):
 		if 'username' in session:
 			response = {'status': 'success'}
@@ -101,11 +108,6 @@ class SignIn(Resource):
 			responseCode = 403
 		return make_response(jsonify(response), responseCode)
 
-	# DELETE: Logout: remove session
-	#
-	# Example curl command:
-	# curl -i -H "Content-Type: application/json" -X DELETE -b cookie-jar
-	#	http://info3103.cs.unb.ca:61340/signin
     def delete(self):
         if 'username' in session:
             del session['username']

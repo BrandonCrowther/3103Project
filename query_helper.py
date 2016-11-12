@@ -27,12 +27,15 @@ def make_query(function, *args):
 def scrape_json(table_name):
     json = request.get_json(silent=True)
     ret = [] #array to return
-    # select which dictionary to use
-    dic = comic
+    dic = []
     if table_name == 'comic':
         dic = comic 
-    elif False:
-        return "no"
+    elif table_name == 'publisher':
+        dic = publisher
+    elif table_name == 'writer':
+        dic = writer
+    elif table_name == 'series':
+        dic = series
     else:
         abort(400)
     
@@ -45,7 +48,9 @@ def scrape_json(table_name):
 
 ## DICTIONARY FOR JSON PARSING ##
 comic = ['series_id', 'issue_number', 'grade', 'image_url', 'writer_id', 'user_id', 'month', 'year',]
-
+publisher = ['name']
+series = ['name', 'first_issue', 'last_issue', 'start_year', 'end_year', 'publisher_id']
+writer = ['first_name', 'last_name']
 
 # call db with sql string and return results
 def call_db(sql_string):

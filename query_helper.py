@@ -6,7 +6,10 @@ import MySQLdb
 
 # call the db on a query with authentication
 def build_response_auth(function, *args):
-    return validate(build_response(function, *args)
+    if validate():
+        return build_response(function, *args)
+    else:
+        abort(403)
 
 # without
 def build_response(function, *args):
@@ -19,6 +22,30 @@ def make_query(function, *args):
         args[n] = str(x)
     sql = "call " + function + "(" + ', '.join(args) + ");"
     return sql
+
+# admittedly, this is a stupid way to do this and very unmaintainable #YOLO
+def scrape_json(table_name):
+    json = request.get_json(silent=True)
+    ret = [] #array to return
+    # select which dictionary to use
+    dic = comic
+    if table_name == 'comic':
+        dic = comic 
+    elif False:
+        return "no"
+    else:
+        abort(400)
+    
+    for key in dic:
+        val = json.get(key, 'NULL')
+        if not val.isdigit() and val != 'NULL':
+            val = "\"" + val + "\""
+        ret.append(val)
+    return ", ".join(ret)
+
+## DICTIONARY FOR JSON PARSING ##
+comic = ['series_id', 'issue_number', 'grade', 'image_url', 'writer_id', 'user_id', 'month', 'year',]
+
 
 # call db with sql string and return results
 def call_db(sql_string):

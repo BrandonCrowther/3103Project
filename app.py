@@ -32,21 +32,21 @@ class StandardErrors(Resource):
 
 
 # Comics
-class Comics(Resource):
-    @app.route("/comics/", METHODS=['GET', 'POST'])
+class Comics():
+    @app.route("/comics/", methods=['GET', 'POST'])
     def comics():
         if request.method == 'GET':
             return build_response_auth("get_comics")
-        else if request.method == 'POST'
-            return build_response_auth("add_comic")
+        elif request.method == 'POST':
+            return build_response_auth("add_comic", scrape_json('comic'))
 
-    @app.route("/comics/<int:comic_id>", METHODS=['GET', 'UPDATE', 'DELETE'])
+    @app.route("/comics/<int:comic_id>", methods=['GET', 'UPDATE', 'DELETE'])
     def get_comic(comic_id):
         if request.method == 'GET':
             return build_response_auth("get_comic", comic_id)
-        else if request.method == 'UPDATE'
+        elif request.method == 'UPDATE':
             return build_response_auth("update_comic", comic_id, request_params['comic'])
-        else if request.method == 'DELETE'
+        elif request.method == 'DELETE':
             return build_response_auth("delete_comic", comic_id)
 
     # add this back later
@@ -108,15 +108,15 @@ class SignIn(Resource):
 			responseCode = 403
 		return make_response(jsonify(response), responseCode)
 
-    def delete(self):
-        if 'username' in session:
-            del session['username']
-            response = {'status': 'success'}
-            responseCode = 200
-        else:
-            response = {'status': 'fail'}
-            responseCode = 403
-        return make_response(jsonify(response), responseCode)
+        def delete(self):
+            if 'username' in session:
+                del session['username']
+                response = {'status': 'success'}
+                responseCode = 200
+            else:
+                response = {'status': 'fail'}
+                responseCode = 403
+            return make_response(jsonify(response), responseCode)
 
 
 

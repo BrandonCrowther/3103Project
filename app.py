@@ -35,33 +35,85 @@ class StandardErrors(Resource):
 class Comics():
     @app.route("/comics/", methods=['GET', 'POST'])
     def comics():
-        if request.method == 'GET':
+        if request.method == 'GET': # get ALL comics
             return build_response_auth("get_comics")
         elif request.method == 'POST':
-            return build_response_auth("add_comic", scrape_json('comic'))
+            return build_response_auth("add_new_issue", scrape_json('comic'))
 
     @app.route("/comics/<int:comic_id>", methods=['GET', 'UPDATE', 'DELETE'])
-    def get_comic(comic_id):
+    def comic(comic_id):
         if request.method == 'GET':
-            return build_response_auth("get_comic", comic_id)
+            return build_response_auth("get_issue", comic_id)
         elif request.method == 'UPDATE':
-            return build_response_auth("update_comic", comic_id, request_params['comic'])
+            return build_response_auth("update_issue", comic_id, scrape_json('comic'))
         elif request.method == 'DELETE':
-            return build_response_auth("delete_comic", comic_id)
+            return build_response_auth("delete_issue", comic_id)
 
-    # add this back later
-    # @app.route("/comics/series/<int:series_id>")
-    # def get_issues_from_series(series_id):
-    #     return build_response("get_issues_from_series", series_id)
-    #
-    # @app.route("/comics/publisher/<int:publisher_id>")
-    # def get_issues_from_publisher(publisher_id):
-    #     return build_response("get_issues_from_publisher", publisher_id)
-    #
-    # @app.route("/comics/writer/<int:writer_id>")
-    # def get_issues_from_writer(writer_id):
-    #     return build_response("get_issues_from_writer", writer_id)
+    @app.route("/comics/series/<int:series_id>")
+    def get_issues_from_series(series_id):
+        return build_response("get_comics_by_series", series_id)
 
+    @app.route("/comics/publisher/<int:publisher_id>")
+    def get_issues_from_publisher(publisher_id):
+        return build_response("get_comics_by_publisher", publisher_id)
+
+    @app.route("/comics/writer/<int:writer_id>")
+    def get_issues_from_writer(writer_id):
+        return build_response("get_comics_by_writer", writer_id)
+
+
+class Writers():
+    @app.route("/writers/", methods=['GET', 'POST'])
+    def writers():
+        if request.method == 'GET': # get ALL comics
+            return build_response_auth("get_writers")
+        elif request.method == 'POST':
+            return build_response_auth("add_new_writer", scrape_json('writer'))
+
+    @app.route("/writers/<int:writer_id>", methods=['GET', 'UPDATE', 'DELETE'])
+    def writer(writer_id):
+        if request.method == 'GET':
+            return build_response_auth("get_writer", writer_id)
+        elif request.method == 'UPDATE':
+            return build_response_auth("update_writer", writer_id, scrape_json('writer'))
+        elif request.method == 'DELETE':
+            return build_response_auth("delete_writer", writer_id)
+
+
+class Publishers():
+    @app.route("/publishers/", methods=['GET', 'POST'])
+    def publishers():
+        if request.method == 'GET': # get ALL comics
+            return build_response_auth("get_publishers")
+        elif request.method == 'POST':
+            return build_response_auth("add_new_publisher", scrape_json('publisher'))
+
+    @app.route("/publishers/<int:publisher_id>", methods=['GET', 'UPDATE', 'DELETE'])
+    def publisher(publisher_id):
+        if request.method == 'GET':
+            return build_response_auth("get_publisher", publisher_id)
+        elif request.method == 'UPDATE':
+            return build_response_auth("update_publisher", publisher_id, scrape_json('publisher'))
+        elif request.method == 'DELETE':
+            return build_response_auth("delete_publisher", publisher_id)
+
+
+class Series():
+    @app.route("/series/", methods=['GET', 'POST'])
+    def seriess():
+        if request.method == 'GET': # get ALL comics
+            return build_response_auth("get_series")
+        elif request.method == 'POST':
+            return build_response_auth("add_new_series", scrape_json('series'))
+
+    @app.route("/series/<int:series_id>", methods=['GET', 'UPDATE', 'DELETE'])
+    def series(series_id):
+        if request.method == 'GET':
+            return build_response_auth("get_series", series_id)
+        elif request.method == 'UPDATE':
+            return build_response_auth("update_series", series_id, scrape_json('series'))
+        elif request.method == 'DELETE':
+            return build_response_auth("delete_series", series_id)
 
 class SignIn(Resource):
 	def post(self):

@@ -137,15 +137,15 @@ class SignIn(Resource):
 			responseCode = 403
 		return make_response(jsonify(response), responseCode)
 
-    def delete(self):
-        if 'username' in session:
-            del session['username']
-            response = {'status': 'success'}
-            responseCode = 200
-        else:
-            response = {'status': 'fail'}
-            responseCode = 403
-        return make_response(jsonify(response), responseCode)
+    	def delete(self):
+        	if 'username' in session:
+            		del session['username']
+            		response = {'status': 'success'}
+            		responseCode = 200
+       	 	else:
+            		response = {'status': 'fail'}
+            		responseCode = 403
+        	return make_response(jsonify(response), responseCode)
 
 
 

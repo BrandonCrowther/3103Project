@@ -37,6 +37,7 @@ class Comics(Resource):
         return build_response_auth("get_comics")
     def post(self):
         return build_response_auth("add_new_issue", scrape_json('comic'))
+class ComicsResource(Resource)
     def get(self, comic_id):
         return build_response_auth("get_issue", comic_id)
     def update(self, comic_id):
@@ -59,8 +60,9 @@ class Comics(Resource):
 class Writers(Resource):
     def get(self):
         return build_response_auth("get_writers")
-    def post(self, writer_id):
+    def post(self):
         return build_response_auth("add_new_writer", scrape_json('writer'))
+class WritersResource(Resource):
     def get(self, writer_id):
         return build_response_auth("get_writer", writer_id)
     def update(self, writer_id):
@@ -71,8 +73,9 @@ class Writers(Resource):
 class Publishers(Resource):
     def get(self):
         return build_response_auth("get_publishers")
-    def post(self, publisher_id):
+    def post(self):
         return build_response_auth("add_new_publisher", scrape_json('publisher'))
+class PublishersResource(Resource):
     def get(self, publisher_id):
         return build_response_auth("get_publisher", publisher_id)
     def update(self, publisher_id):
@@ -83,8 +86,9 @@ class Publishers(Resource):
 class Series(Resource):
     def get(self):
         return build_response_auth("get_series")
-    def post(self, series_id):
+    def post(self):
         return build_response_auth("add_new_series", scrape_json('series'))
+class SeriesResource(Resource):
     def get(self, series_id):
         return build_response_auth("get_series", series_id)
     def update(self, series_id):
@@ -93,49 +97,49 @@ class Series(Resource):
         return build_response_auth("delete_series", series_id)
 
 class SignIn(Resource):
-	def post(self):
-		if not request.json:
-			abort(400)
-		parser = reqparse.RequestParser()
- 		try:
- 			# Check for required attributes in json document, create a dictionary
-	 		parser.add_argument('username', type=str, required=True)
-			parser.add_argument('password', type=str, required=True)
-			request_params = parser.parse_args()
-		except:
-			abort(400)
-		if request_params['username'] in session:
-			response = {'status': 'success'}
-			responseCode = 200
-		else:
-			try:
-				l = ldap.open(LDAP_HOST)
-				l.start_tls_s()
-				l.simple_bind_s("uid="+request_params['username']+
-					", ou=People,ou=fcs,o=unb", request_params['password'])
-				# At this point we have sucessfully authenticated.
+    def post(self):
+    	if not request.json:
+    		abort(400)
+    	parser = reqparse.RequestParser()
+    		try:
+    			# Check for required attributes in json document, create a dictionary
+     		parser.add_argument('username', type=str, required=True)
+    		parser.add_argument('password', type=str, required=True)
+    		request_params = parser.parse_args()
+    	except:
+    		abort(400)
+    	if request_params['username'] in session:
+    		response = {'status': 'success'}
+    		responseCode = 200
+    	else:
+    		try:
+    			l = ldap.open(LDAP_HOST)
+    			l.start_tls_s()
+    			l.simple_bind_s("uid="+request_params['username']+
+    				", ou=People,ou=fcs,o=unb", request_params['password'])
+    			# At this point we have sucessfully authenticated.
 
-				session['username'] = request_params['username']
-				response = {'status': 'success', 'username': session['username'] }
-				print "SESSION CREATED: " + session['username']
-				responseCode = 201
-			except ldap.LDAPError, error_message:
-				response = {'status': 'Access denied', 'error': str(error_message)}
-				responseCode = 403
-			finally:
-				l.unbind()
+    			session['username'] = request_params['username']
+    			response = {'status': 'success', 'username': session['username'] }
+    			print "SESSION CREATED: " + session['username']
+    			responseCode = 201
+    		except ldap.LDAPError, error_message:
+    			response = {'status': 'Access denied', 'error': str(error_message)}
+    			responseCode = 403
+    		finally:
+    			l.unbind()
 
-		return make_response(jsonify(response), responseCode)
+    	return make_response(jsonify(response), responseCode)
 
     # Unused, but available for curling
-	def get(self):
-		if 'username' in session:
-			response = {'status': 'success'}
-			responseCode = 200
-		else:
-			response = {'status': 'fail'}
-			responseCode = 403
-		return make_response(jsonify(response), responseCode)
+    def get(self):
+    	if 'username' in session:
+    		response = {'status': 'success'}
+    		responseCode = 200
+    	else:
+    		response = {'status': 'fail'}
+    		responseCode = 403
+    	return make_response(jsonify(response), responseCode)
 
     	def delete(self):
         	if 'username' in session:
@@ -150,11 +154,15 @@ class SignIn(Resource):
 
 
 api = Api(app)
-api.add_resource(SignIn,        '/signin')
-api.add_resource(Comics,        '/comics',      '/comics/<comic_id>')
-api.add_resource(Publishers,    '/publishers',  '/publishers/<publisher_id>')
-api.add_resource(Writers,       '/writers',     '/writers/<writer_id>')
-api.add_resource(Series,        '/series',      '/series/<series_id>')
+api.add_resource(SignIn,                '/signin')
+api.add_resource(Comics,                '/comics')
+api.add_resource(ComicsResource,        '/comics/<comic_id>')
+api.add_resource(Publishers,            '/publishers')
+api.add_resource(PublishersResource,    '/publishers/<publisher_id>')
+api.add_resource(Writers,               '/writers')
+api.add_resource(WritersResource,       '/writers/<writer_id>')
+api.add_resource(Series,                '/series/<series_id>')
+api.add_resource(SeriesResource,        '/series')
 
 if __name__ == "__main__":
     context = ('cert.pem', 'key.pem')

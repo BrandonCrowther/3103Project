@@ -32,22 +32,17 @@ class StandardErrors(Resource):
 
 
 # Comics
-class Comics():
-    @app.route("/comics/", methods=['GET', 'POST'])
-    def comics():
-        if request.method == 'GET': # get ALL comics
-            return build_response_auth("get_comics")
-        elif request.method == 'POST':
-            return build_response_auth("add_new_issue", scrape_json('comic'))
-
-    @app.route("/comics/<int:comic_id>", methods=['GET', 'UPDATE', 'DELETE'])
-    def comic(comic_id):
-        if request.method == 'GET':
-            return build_response_auth("get_issue", comic_id)
-        elif request.method == 'UPDATE':
-            return build_response_auth("update_issue", comic_id, scrape_json('comic'))
-        elif request.method == 'DELETE':
-            return build_response_auth("delete_issue", comic_id)
+class Comics(Resource):
+    def get(self):
+        return build_response_auth("get_comics")
+    def post(self):
+        return build_response_auth("add_new_issue", scrape_json('comic'))
+    def get(self, comic_id):
+        return build_response_auth("get_issue", comic_id)
+    def update(self, comic_id):
+        return build_response_auth("update_issue", comic_id, scrape_json('comic'))
+    def delete(self, comic_id):
+        return build_response_auth("delete_issue", comic_id)
 
     @app.route("/comics/series/<int:series_id>")
     def get_issues_from_series(series_id):
@@ -61,59 +56,41 @@ class Comics():
     def get_issues_from_writer(writer_id):
         return build_response("get_comics_by_writer", writer_id)
 
+class Writers(Resource):
+    def get(self):
+        return build_response_auth("get_writers")
+    def post(self, writer_id):
+        return build_response_auth("add_new_writer", scrape_json('writer'))
+    def get(self, writer_id):
+        return build_response_auth("get_writer", writer_id)
+    def update(self, writer_id):
+        return build_response_auth("update_writer", writer_id, scrape_json('writer'))
+    def delete(self, writer_id):
+        return build_response_auth("delete_writer", writer_id)
 
-class Writers():
-    @app.route("/writers/", methods=['GET', 'POST'])
-    def writers():
-        if request.method == 'GET': # get ALL comics
-            return build_response_auth("get_writers")
-        elif request.method == 'POST':
-            return build_response_auth("add_new_writer", scrape_json('writer'))
+class Publishers(Resource):
+    def get(self):
+        return build_response_auth("get_publishers")
+    def post(self, publisher_id):
+        return build_response_auth("add_new_publisher", scrape_json('publisher'))
+    def get(self, publisher_id):
+        return build_response_auth("get_publisher", publisher_id)
+    def update(self, publisher_id):
+        return build_response_auth("update_publisher", publisher_id, scrape_json('publisher'))
+    def delete(self, publisher_id):
+        return build_response_auth("delete_publisher", publisher_id)
 
-    @app.route("/writers/<int:writer_id>", methods=['GET', 'UPDATE', 'DELETE'])
-    def writer(writer_id):
-        if request.method == 'GET':
-            return build_response_auth("get_writer", writer_id)
-        elif request.method == 'UPDATE':
-            return build_response_auth("update_writer", writer_id, scrape_json('writer'))
-        elif request.method == 'DELETE':
-            return build_response_auth("delete_writer", writer_id)
-
-
-class Publishers():
-    @app.route("/publishers/", methods=['GET', 'POST'])
-    def publishers():
-        if request.method == 'GET': # get ALL comics
-            return build_response_auth("get_publishers")
-        elif request.method == 'POST':
-            return build_response_auth("add_new_publisher", scrape_json('publisher'))
-
-    @app.route("/publishers/<int:publisher_id>", methods=['GET', 'UPDATE', 'DELETE'])
-    def publisher(publisher_id):
-        if request.method == 'GET':
-            return build_response_auth("get_publisher", publisher_id)
-        elif request.method == 'UPDATE':
-            return build_response_auth("update_publisher", publisher_id, scrape_json('publisher'))
-        elif request.method == 'DELETE':
-            return build_response_auth("delete_publisher", publisher_id)
-
-
-class Series():
-    @app.route("/series/", methods=['GET', 'POST'])
-    def seriess():
-        if request.method == 'GET': # get ALL comics
-            return build_response_auth("get_series")
-        elif request.method == 'POST':
-            return build_response_auth("add_new_series", scrape_json('series'))
-
-    @app.route("/series/<int:series_id>", methods=['GET', 'UPDATE', 'DELETE'])
-    def series(series_id):
-        if request.method == 'GET':
-            return build_response_auth("get_series", series_id)
-        elif request.method == 'UPDATE':
-            return build_response_auth("update_series", series_id, scrape_json('series'))
-        elif request.method == 'DELETE':
-            return build_response_auth("delete_series", series_id)
+class Series(Resource):
+    def get(self):
+        return build_response_auth("get_series")
+    def post(self, series_id):
+        return build_response_auth("add_new_series", scrape_json('series'))
+    def get(self, series_id):
+        return build_response_auth("get_series", series_id)
+    def update(self, series_id):
+        return build_response_auth("update_series", series_id, scrape_json('series'))
+    def delete(self, series_id):
+        return build_response_auth("delete_series", series_id)
 
 class SignIn(Resource):
 	def post(self):
@@ -160,20 +137,24 @@ class SignIn(Resource):
 			responseCode = 403
 		return make_response(jsonify(response), responseCode)
 
-        def delete(self):
-            if 'username' in session:
-                del session['username']
-                response = {'status': 'success'}
-                responseCode = 200
-            else:
-                response = {'status': 'fail'}
-                responseCode = 403
-            return make_response(jsonify(response), responseCode)
+    def delete(self):
+        if 'username' in session:
+            del session['username']
+            response = {'status': 'success'}
+            responseCode = 200
+        else:
+            response = {'status': 'fail'}
+            responseCode = 403
+        return make_response(jsonify(response), responseCode)
 
 
 
 api = Api(app)
-api.add_resource(SignIn, '/signin')
+api.add_resource(SignIn,        '/signin')
+api.add_resource(Comics,        '/comics',      '/comics/<comic_id>')
+api.add_resource(Publishers,    '/publishers',  '/publishers/<publisher_id>')
+api.add_resource(Writers,       '/writers',     '/writers/<writer_id>')
+api.add_resource(Series,        '/series',      '/series/<series_id>')
 
 if __name__ == "__main__":
     context = ('cert.pem', 'key.pem')

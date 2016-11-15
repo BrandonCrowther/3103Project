@@ -123,7 +123,6 @@ class SignIn(Resource):
 api = Api(app)
 api.add_resource(SignIn, '/signin')
 
-
-# xxxxx= last 5 digits of your studentid. If xxxxx > 65535, subtract 30000
 if __name__ == "__main__":
+    context = ('cert.pem', 'key.pem')
     app.run(host = APP_HOST, port = APP_PORT, debug = APP_DEBUG)

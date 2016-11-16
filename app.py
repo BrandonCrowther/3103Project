@@ -36,12 +36,12 @@ class Comics(Resource):
     def get(self):
         return build_response_auth("get_comics")
     def post(self):
-        return build_response_auth("add_new_issue", scrape_json('comic'))
+        return build_response_auth("add_new_issue", *scrape_json('comic'))
 class ComicsResource(Resource):
     def get(self, comic_id):
         return build_response_auth("get_issue", comic_id)
-    def update(self, comic_id):
-        return build_response_auth("update_issue", comic_id, scrape_json('comic'))
+    def put(self, comic_id):
+        return build_response_auth("update_issue", comic_id, *scrape_json('comic'))
     def delete(self, comic_id):
         return build_response_auth("delete_issue", comic_id)
 
@@ -61,12 +61,12 @@ class Writers(Resource):
     def get(self):
         return build_response_auth("get_writers")
     def post(self):
-        return build_response_auth("add_new_writer", scrape_json('writer'))
+        return build_response_auth("add_new_writer", *scrape_json('writer'))
 class WritersResource(Resource):
     def get(self, writer_id):
         return build_response_auth("get_writer", writer_id)
-    def update(self, writer_id):
-        return build_response_auth("update_writer", writer_id, scrape_json('writer'))
+    def put(self, writer_id):
+        return build_response_auth("update_writer", writer_id, *scrape_json('writer'))
     def delete(self, writer_id):
         return build_response_auth("delete_writer", writer_id)
 
@@ -74,12 +74,12 @@ class Publishers(Resource):
     def get(self):
         return build_response_auth("get_publishers")
     def post(self):
-        return build_response_auth("add_new_publisher", scrape_json('publisher'))
+        return build_response_auth("add_new_publisher", *scrape_json('publisher'))
 class PublishersResource(Resource):
     def get(self, publisher_id):
         return build_response_auth("get_publisher", publisher_id)
-    def update(self, publisher_id):
-        return build_response_auth("update_publisher", publisher_id, scrape_json('publisher'))
+    def put(self, publisher_id):
+        return build_response_auth("update_publisher", publisher_id, *scrape_json('publisher'))
     def delete(self, publisher_id):
         return build_response_auth("delete_publisher", publisher_id)
 
@@ -87,12 +87,12 @@ class Series(Resource):
     def get(self):
         return build_response_auth("get_series")
     def post(self):
-        return build_response_auth("add_new_series", scrape_json('series'))
+        return build_response_auth("add_new_series", *scrape_json('series'))
 class SeriesResource(Resource):
     def get(self, series_id):
         return build_response_auth("get_series", series_id)
-    def update(self, series_id):
-        return build_response_auth("update_series", series_id, scrape_json('series'))
+    def put(self, series_id):
+        return build_response_auth("update_series", series_id, *scrape_json('series'))
     def delete(self, series_id):
         return build_response_auth("delete_series", series_id)
 

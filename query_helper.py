@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 from flask import *
 import MySQLdb
+import sys
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
 # This file just contains the helper methods built to make routing simple
 
 # call the db on a query with authentication
@@ -13,15 +16,11 @@ def build_response_auth(function, *args):
 
 # without
 def build_response(function, *args):
-    return call_db(make_query(function, *args)) + "\n"
+    return call_db(function, *args)
 
 # build query string and call the db using a specified function
-def make_query(function, *args):
-    args = list(args)
-    for n,x in enumerate(args):
-        args[n] = str(x)
-    sql = "call " + function + "(" + ', '.join(args) + ");"
-    return sql
+def sanitize_query(*args):
+    return [s.encode('utf-8') for s in args]
 
 # admittedly, this is a stupid way to do this and very unmaintainable #YOLO
 def scrape_json(table_name):
@@ -39,14 +38,13 @@ def scrape_json(table_name):
     elif table_name == 'series':
         dic = series
     else:
+        print "Could not understand dictionary " + dic
         abort(400)
 
     for key in dic:
         val = json.get(key, 'NULL')
-        if not val.isdigit() and val != 'NULL':
-            val = "\"" + val + "\""
         ret.append(val)
-    return ", ".join(ret)
+    return ret
 
 ## DICTIONARY FOR JSON PARSING ##
 comic = ['series_id', 'issue_number', 'grade', 'image_url', 'writer_id', 'user_id', 'month', 'year']
@@ -55,15 +53,23 @@ series = ['name', 'first_issue', 'last_issue', 'start_year', 'end_year', 'publis
 writer = ['first_name', 'last_name']
 
 # call db with sql string and return results
-def call_db(sql_string):
-    connection = MySQLdb.connect(host='localhost', user='bcrowthe', passwd='Mu7YlQr2', db='bcrowthe')
+def call_db(proc, *args):
+    connection = MySQLdb.connect(host='localhost', user='amcalli1', passwd='WhjCg35O', db='amcalli1', use_unicode=True, charset='utf8')
+    connection.autocommit(True)
+
+    # redundant sanitization because paranoia
+    arguments = sanitize_query(*args)
+
     try:
-        cursor = connection.cursor()
-        cursor.execute(sql_string)
-        return str(cursor.fetchone())
+        cursor = connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.callproc(proc, arguments)
+        row = cursor.fetchall()
+        return row
     except Exception, e:
         print e
-    return "ERROR IN SQL STATEMENT: " + sql_string
+    finally:
+        cursor.close()
+        connection.close()
     abort(400)
 
 # quickly validate and call the method passed to it

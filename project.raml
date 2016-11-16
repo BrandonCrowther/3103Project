@@ -1,0 +1,483 @@
+#%RAML 0.8
+title: Petstore API
+version: "1.0.0"
+baseUri:
+
+traits:
+	- paged: 
+			queryParameters:
+				pages:
+					description: the number of pages to return
+					type: number
+	- secured:	!include http://remote-host/secured.yml
+
+schemas: 
+	- ComicIssue: | 
+		{
+			"type": "object",
+			"$schema": "http://json-schema.org/draft-03/schema#",
+			"title": "comicIssue",
+			"id": "http://jsonschema.net",
+			"required": true,
+			"properties": { 
+				"id": {
+					"type": "integer",
+					"required":  "true"
+				},
+				"series_id": {
+					"type": "integer",
+					"required":  "true"
+				},
+				"issue_number": {
+					"type": "integer",
+					"required":  "true"
+				},
+				"grade": {
+					"type": "number",
+					"required":  "false"
+				},
+				"image_url": {
+					"type": "string",
+					"required":  "true"
+				},
+				"writer_id": {
+					"type": "integer",
+					"required":  "false"
+				},
+				"user_id": {
+					"type": "string",
+					"required":  "true"
+				},
+				"month": {
+					"type": "integer",
+					"required":  "false"
+				},
+				"year": {
+					"type": "integer",
+					"required":  "false"
+				}
+			}
+				
+		}
+	- Writer: |
+		{
+			"type": "object",
+			"$schema": "http://json-schema.org/draft-03/schema#",
+			"title": "writer",
+			"id": "http://jsonschema.net",
+			"required": true,
+			"properties": { 
+				"id": {
+					"type": "integer",
+					"required":  "true"
+				},
+				"first_name": {
+					"type": "string",
+					"required":  "true"
+				},
+				"last_name": {
+					"type": "string",
+					"required":  "true"
+				}
+			}
+		}
+	
+	- Publisher: |
+		{
+			"type": "object",
+			"$schema": "http://json-schema.org/draft-03/schema#",
+			"title": "publisher",
+			"id": "http://jsonschema.net",
+			"required": true,
+			"properties": { 
+				"id": {
+					"type": "integer",
+					"required":  "true"
+				},
+				"name": {
+					"type": "string",
+					"required":  "true"
+				}
+			}
+		}
+	- Series: | 
+		{
+			"type": "object",
+			"$schema": "http://json-schema.org/draft-03/schema#",
+			"title": "comicIssue",
+			"id": "http://jsonschema.net",
+			"required": true,
+			"properties": { 
+				"id": {
+					"type": "integer",
+					"required":  "true"
+				},
+				"name": {
+					"type": "string",
+					"required":  "true"
+				},
+				"first_issue": {
+					"type": "integer",
+					"required":  "true"
+				},
+				"last_issue": {
+					"type": "integer",
+					"required":  "false"
+				},
+				"start_year": {
+					"type": "integer",
+					"required":  "true"
+				},
+				"end_year": {
+					"type": "integer",
+					"required":  "false"
+				},
+				"publisher_id": {
+					"type": "integer",
+					"required":  "true"
+				}
+			}
+				
+		}
+	
+
+/comics
+	displayName: Comic Collection
+	get:
+		description: Returns your comic collection
+		displayName: getCollection
+		is: [paged]
+		responses:
+			"200":
+				description: Success
+				body: 
+					application/json:
+						schema: ComicIssue
+						example: '[{"id": 1, "series_id": 1, "issue_number": 1, "grade": null, "image_url": "example.url.com",  "writer_id": 1, "user_id": "amcalli1", "month": null, "year": null}]'
+			"400":
+			"404":
+/comics/{issueId}
+	displayName: Comic Issue
+	uriParameters:
+		issueId:
+			displayName: issueId
+			description: ID for an individual comic that needs to be fetched or updated
+			type: integer
+			required: true
+			repeat: false
+	get:
+		description: get this specific comic
+		displayName: Find comic by ID
+		queryParameters: 
+			userId:
+				description: UNB user name for collection owner
+				displayName: UserId
+				type: String
+				required: true
+				repeat: false
+		responses: 
+			"200":
+				description: Success
+				body:
+					application/json:
+						schema: ComicIssue
+						example: '{"id": 1, "series_id": 1, "issue_number": 1, "grade": null, "image_url": "example.url.com",  "writer_id": 1, "user_id": "amcalli1", "month": null, "year": null}'
+			"400":
+			"404":
+	delete:
+		description: delete this comic
+		displayName: delete Comic
+		responses:
+			"200":
+				description: Success
+			"400":
+			"404": 
+	put:
+		description: Update this comic
+		displayName: Update Comic
+		body:
+			application/json:
+				schema: ComicIssue
+				example: '{"id": 1, "series_id": 1, "issue_number": 1, "grade": null, "image_url": "example.url.com",  "writer_id": 1, "user_id": "amcalli1", "month": null, "year": null}'
+		responses: 
+			"200":
+				description: Success
+			"400":
+			"404":
+/comics/addNewIssue
+	displayName: AddNewIssue
+	post:
+		body:
+			application/json:
+				schema: ComicIssue
+				example: '{"id": 1, "series_id": 1, "issue_number": 1, "grade": null, "image_url": "example.url.com",  "writer_id": 1, "user_id": "amcalli1", "month": null, "year": null}'
+		responses:
+			"201": 
+				description: Success
+			"400":
+/comics/getIssuesFromSeries
+	displayName: getIssuesFromSeries
+	get: 
+		description: get the issues from a specific series
+		displayName: getIssuesFromSeries
+		queryParameters: 
+			userId:
+				description: UNB user name for collection owner
+				displayName: UserId
+				type: String
+				required: true
+				repeat: false
+			seriesId:
+				description: series ID
+				displayName: SeriesId
+				type: integer
+				required: true
+				repeat: false
+		responses:
+			body: 
+				application/json:
+					schema: ComicIssue
+					example: '[{"id": 1, "series_id": 1, "issue_number": 1, "grade": null, "image_url": "example.url.com",  "writer_id": 1, "user_id": "amcalli1", "month": null, "year": null}]'
+			"400":
+			"404":
+/comics/getIssuesFromPublisher
+	displayName: getIssuesFromPublisher
+	get: 
+		description: get the issues from a specific publisher
+		displayName: getIssuesFromPublisher
+		queryParameters: 
+			userId:
+				description: UNB user name for collection owner
+				displayName: UserId
+				type: String
+				required: true
+				repeat: false
+			pubId:
+				description: publisher id
+				displayName: PubId
+				type: integer
+				required: true
+				repeat: false
+		responses:
+			body: 
+				application/json:
+					schema: ComicIssue
+					example: '[{"id": 1, "series_id": 1, "issue_number": 1, "grade": null, "image_url": "example.url.com",  "writer_id": 1, "user_id": "amcalli1", "month": null, "year": null}]'
+			"400":
+			"404":
+/comics/getIssuesFromWriter
+	displayName: getIssuesFromWriter
+	get: 
+		description: get the issues from a specific writer
+		displayName: getIssuesFromWriter
+		queryParameters: 
+			userId:
+				description: UNB user name for collection owner
+				displayName: UserId
+				type: String
+				required: true
+				repeat: false
+			writId:
+				description: Writer ID
+				displayName: writId
+				type: integer
+				required: true
+				repeat: false
+		responses:
+			body: 
+				application/json:
+					schema: ComicIssue
+					example: '[{"id": 1, "series_id": 1, "issue_number": 1, "grade": null, "image_url": "example.url.com",  "writer_id": 1, "user_id": "amcalli1", "month": null, "year": null}]'
+			"400":
+			"404":
+/comics/addIssue
+	display: addIssue
+	post:
+		displayName: Add a comic to the collection
+		body: 
+			application/json:
+				schema: ComicIssue
+				example: '[{"id": 1, "series_id": 1, "issue_number": 1, "grade": null, "image_url": "example.url.com",  "writer_id": 1, "user_id": "amcalli1", "month": null, "year": null}]'
+		responses:
+			"201":
+				description: Success
+			"400":
+/writers
+	displayName: comicWriters
+	get:
+		description: Returns the all the writers
+		displayName: getWriters
+		is: [paged]
+		responses:
+			"200":
+				description: Success
+				body: 
+					application/json:
+						schema: Writer
+						example: '[{"id": 1, "first_name": "Scott", "last_name": "Snyder"}]'
+			"400":
+			"404":
+	post:
+		description: Add new Writer
+		displayName: addWriters
+		body: 
+			application/json:
+				schema: Writer
+				example: '{"id": 1, "first_name": "Scott", "last_name": "Snyder"}'
+		responses:
+			"200": 
+				description: Success
+			"400"
+					
+/writers/{writerId}
+	displayName: specificWriter
+	uriParameters
+		writerId:
+			displayName: writerId
+			description: the id for the writer
+			type: integer
+			required: true
+			repeat: false
+	get:
+		description: Returns this writer
+		displayName: getWriter
+		responses:
+			"200":
+				description: Success
+				body: 
+					application/json:
+						schema: Writer
+						example: '{"id": 1, "first_name": "Scott", "last_name": "Snyder"}'
+			"400":
+			"404":	
+	put:
+		description: Update Writer
+		displayName: updateWriter
+		body:
+			application/json:
+				schema: Writer
+				example: '{"id": 1, "first_name": "Scott", "last_name": "Snyder"}'
+		responses:
+			"200":
+				description: Success
+			"400": 
+			"404":
+/publishers
+	displayName: comicPublishers
+	get:
+		description: Returns the all the publishers
+		displayName: getPublishers
+		is: [paged]
+		responses:
+			"200":
+				description: Success
+				body: 
+					application/json:
+						schema: Publisher
+						example: '[{"id": 1, "name": "DC"}]'
+			"400":
+			"404":
+	post:
+		description: Add new Publisher
+		displayName: addPublisher
+		body: 
+			application/json:
+				schema: Publisher
+				example: '{"id": 1, "name": "DC"}'
+		responses:
+			"201": 
+				description: Success
+			"400":
+/publishers/{publisherId}
+	displayName: specificWriter
+	uriParameters
+		publisherId:
+			displayName: publisherId
+			description: the id for the publisher
+			type: integer
+			required: true
+			repeat: false
+	get:
+		description: Returns this writer
+		displayName: getPublisher
+		responses:
+			"200":
+				description: Success
+				body: 
+					application/json:
+						schema: Publisher
+						example: '{"id": 1, "name": "DC"}'
+			"400":
+			"404":	
+	put:
+		description: Update Publisher
+		displayName: updatePublisher
+		body:
+			application/json:
+				schema: Publisher
+				example: '{"id": 1, "name": "DC"}'
+		responses:
+			"200":
+				description: Success
+			"400": 
+			"404":
+/series
+	displayName: comicSeries
+	get:
+		description: Returns the all the series
+		displayName: getSeries
+		is: [paged]
+		responses:
+			"200":
+				description: Success
+				body: 
+					application/json:
+						schema: Series
+						example: '[{"id": 1, "name": "Batman", "first_issue": 1, "last_issue": null, "start_year": 2011, "end_year": 2016, "publisher_id": 1}]'
+			"400":
+			"404":
+	post:
+		description: Add new Series
+		displayName: addSeries
+		body: 
+			application/json:
+				schema: Series
+				example: '{"id": 1, "name": "Batman", "first_issue": 1, "last_issue": null, "start_year": 2011, "end_year": 2016, "publisher_id": 1}'
+		responses:
+			"201": 
+				description: Success
+			"400":
+/series/{seriesId}
+	/series/{seriesId}
+	displayName: specificWriter
+	uriParameters
+		seriesId:
+			displayName: seriesId
+			description: the id for the series
+			type: integer
+			required: true
+			repeat: false
+	get:
+		description: Returns this writer
+		displayName: getSeries
+		responses:
+			"200":
+				description: Success
+				body: 
+					application/json:
+						schema: Series
+						example: '{"id": 1, "name": "Batman", "first_issue": 1, "last_issue": null, "start_year": 2011, "end_year": 2016, "publisher_id": 1}'
+			"400":
+			"404":	
+	put:
+		description: Update Series
+		displayName: updateSeries
+		body:
+			application/json:
+				schema: Series
+				example: '{"id": 1, "name": "Batman", "first_issue": 1, "last_issue": null, "start_year": 2011, "end_year": 2016, "publisher_id": 1}'
+		responses:
+			"200":
+				description: Success
+			"400": 
+			"404":

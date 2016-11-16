@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from flask import *
 import MySQLdb
+from settings import *
 import sys
 
 reload(sys)
@@ -54,7 +55,7 @@ writer = ['first_name', 'last_name']
 
 # call db with sql string and return results
 def call_db(proc, *args):
-    connection = MySQLdb.connect(host='localhost', user='amcalli1', passwd='WhjCg35O', db='amcalli1', use_unicode=True, charset='utf8')
+    connection = MySQLdb.connect(host=MYSQL_HOST, user=MYSQL_USER, passwd=MYSQL_PASSWD, db=MYSQL_DB, use_unicode=True, charset='utf8')
     connection.autocommit(True)
 
     # redundant sanitization because paranoia

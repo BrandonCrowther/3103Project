@@ -37,7 +37,7 @@ class Comics(Resource):
         return build_response_auth("get_comics")
     def post(self):
         return build_response_auth("add_new_issue", scrape_json('comic'))
-class ComicsResource(Resource)
+class ComicsResource(Resource):
     def get(self, comic_id):
         return build_response_auth("get_issue", comic_id)
     def update(self, comic_id):
@@ -101,7 +101,7 @@ class SignIn(Resource):
     	if not request.json:
     		abort(400)
     	parser = reqparse.RequestParser()
-    		try:
+    	try:
     			# Check for required attributes in json document, create a dictionary
      		parser.add_argument('username', type=str, required=True)
     		parser.add_argument('password', type=str, required=True)

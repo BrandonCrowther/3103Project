@@ -9,7 +9,7 @@ DROP PROCEDURE IF EXISTS get_comics_by_publisher //
 DROP PROCEDURE IF EXISTS get_comics_by_writer // 
 
 DROP PROCEDURE IF EXISTS get_writers //
-DROP PROCEDURE IF EXISTS add_new_wiriter // 
+DROP PROCEDURE IF EXISTS add_new_writer // 
 DROP PROCEDURE IF EXISTS get_writer // 
 DROP PROCEDURE IF EXISTS update_writer //
 
@@ -72,7 +72,7 @@ BEGIN
 	SELECT * FROM writers;
 END //
 
-CREATE PROCEDURE add_new_wiriter (	IN i_first_name VARCHAR(255),IN i_last_name VARCHAR(255))
+CREATE PROCEDURE add_new_writer (	IN i_first_name VARCHAR(255),IN i_last_name VARCHAR(255))
 BEGIN 
 	INSERT INTO writers (first_name, last_name) 
 	VALUES(i_first_name, i_last_name);

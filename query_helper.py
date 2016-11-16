@@ -26,10 +26,12 @@ def make_query(function, *args):
 # admittedly, this is a stupid way to do this and very unmaintainable #YOLO
 def scrape_json(table_name):
     json = request.get_json(silent=True)
+    if not json:
+        abort(400)
     ret = [] #array to return
     dic = []
     if table_name == 'comic':
-        dic = comic 
+        dic = comic
     elif table_name == 'publisher':
         dic = publisher
     elif table_name == 'writer':
@@ -38,7 +40,7 @@ def scrape_json(table_name):
         dic = series
     else:
         abort(400)
-    
+
     for key in dic:
         val = json.get(key, 'NULL')
         if not val.isdigit() and val != 'NULL':
@@ -47,7 +49,7 @@ def scrape_json(table_name):
     return ", ".join(ret)
 
 ## DICTIONARY FOR JSON PARSING ##
-comic = ['series_id', 'issue_number', 'grade', 'image_url', 'writer_id', 'user_id', 'month', 'year',]
+comic = ['series_id', 'issue_number', 'grade', 'image_url', 'writer_id', 'user_id', 'month', 'year']
 publisher = ['name']
 series = ['name', 'first_issue', 'last_issue', 'start_year', 'end_year', 'publisher_id']
 writer = ['first_name', 'last_name']

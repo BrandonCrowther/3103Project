@@ -155,15 +155,15 @@ class SignIn(Resource):
 
 api = Api(app)
 api.add_resource(SignIn,                '/signin')
-api.add_resource(Comics,                '/comics')
+api.add_resource(Comics,                '/comics', '/comics/')
 api.add_resource(ComicsResource,        '/comics/<comic_id>')
-api.add_resource(Publishers,            '/publishers')
+api.add_resource(Publishers,            '/publishers', '/publishers/')
 api.add_resource(PublishersResource,    '/publishers/<publisher_id>')
-api.add_resource(Writers,               '/writers')
+api.add_resource(Writers,               '/writers', '/writers/')
 api.add_resource(WritersResource,       '/writers/<writer_id>')
-api.add_resource(Series,                '/series/<series_id>')
-api.add_resource(SeriesResource,        '/series')
+api.add_resource(Series,                '/series', '/series/')
+api.add_resource(SeriesResource,        '/series/<series_id>')
 
 if __name__ == "__main__":
     context = ('cert.pem', 'key.pem')
-    app.run(host = APP_HOST, port = APP_PORT, debug = APP_DEBUG)
+    app.run(host = APP_HOST, port = APP_PORT, debug = APP_DEBUG, ssl_context=context)

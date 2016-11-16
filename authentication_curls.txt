@@ -1,8 +1,8 @@
-To post a key/authenticate:
-curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"username":"username", "password":"unb password"}' -c cookie-jar http://info3103.cs.unb.ca:43005/signin
+Login:
+curl -i -H "Content-Type: application/json" -X POST -d '{"username": "Casper", "password": "crap"}' -c cookie-jar -k https://info3103.cs.unb.ca:43005/signin
 
-To get a key:
-curl -i -H "Content-Type: application/json" -X GET -b cookie-jar http://info3103.cs.unb.ca:43005/signin
+Check login status:
+curl -i -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/signin
 
-Delete a key:
-curl -i -H "Content-Type: application/json" -X DELETE -b cookie-jar http://info3103.cs.unb.ca:61340/signin
+Logout:
+curl -i -H "Content-Type: application/json" -X DELETE -b cookie-jar -k https://info3103.cs.unb.ca:43005/signin

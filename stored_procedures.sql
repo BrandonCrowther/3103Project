@@ -14,7 +14,7 @@ DROP PROCEDURE IF EXISTS get_writer //
 DROP PROCEDURE IF EXISTS update_writer //
 
 DROP PROCEDURE IF EXISTS get_publishers // 
-DROP PROCEDURE IF EXISTS add_new_publisher // 
+DROP PROCEDURE IF EXISTS add_new_publisher; // 
 DROP PROCEDURE IF EXISTS get_publisher // 
 DROP PROCEDURE IF EXISTS update_publisher//
 
@@ -43,11 +43,13 @@ END //
 CREATE PROCEDURE update_issue (	IN i_issue_id INT, IN i_issue_number INT, IN i_series_id INT, IN i_grade float, IN i_image_url VARCHAR(255), IN i_writer_id INT, IN i_user_id VARCHAR(255), IN i_month INT, IN i_year INT)
 BEGIN 
 	UPDATE comic_issues SET series_id = i_series_id, issue_number = i_issue_number, grade = i_grade, image_url = i_image_url, writer_id = i_writer_id, user_id = i_user_id, month = i_month, year = i_year WHERE id = i_issue_id;
+	SELECT * FROM comic_issues WHERE id = i_issue_id ORDER BY id desc LIMIT 1;
 END //
 
 CREATE PROCEDURE add_new_issue (IN i_issue_number INT,IN i_series_id INT, IN i_grade float, IN i_image_url VARCHAR(255), IN i_writer_id INT, IN i_user_id VARCHAR(255),IN i_month INT, IN i_year INT)
 BEGIN 
 	INSERT INTO comic_issues (series_id, issue_number, grade, image_url, writer_id, user_id, month, year) VALUES(i_series_id, i_issue_number, i_grade, i_image_url, i_writer_id, i_user_id, i_month, i_year);
+	SELECT * FROM comic_issues ORDER BY id desc LIMIT 1;
 END // 
 
 CREATE PROCEDURE get_comics_by_series(	IN i_user_id VARCHAR(255), IN i_series_id INT)
@@ -76,6 +78,7 @@ CREATE PROCEDURE add_new_writer (	IN i_first_name VARCHAR(255),IN i_last_name VA
 BEGIN 
 	INSERT INTO writers (first_name, last_name) 
 	VALUES(i_first_name, i_last_name);
+	SELECT * FROM writers ORDER BY id desc LIMIT 1;
 END // 
 
 CREATE PROCEDURE get_writer(IN i_writer_id INT)
@@ -86,6 +89,7 @@ END //
 CREATE PROCEDURE update_writer (IN i_writer_id INT,IN i_first_name VARCHAR(255), IN i_last_name VARCHAR(255))
 BEGIN 
 	UPDATE writers SET first_name = i_first_name, last_name = i_last_name WHERE id = i_writer_id;
+	SELECT * FROM writers WHERE id = i_writer_id ORDER BY id desc LIMIT 1;
 END //
 
 
@@ -99,17 +103,19 @@ CREATE PROCEDURE add_new_publisher (IN i_name VARCHAR(255))
 BEGIN 
 	INSERT INTO publishers (name) 
 	VALUES(i_name);
+	SELECT * FROM publishers ORDER BY id desc LIMIT 1;
 END // 
 
 CREATE PROCEDURE get_publisher(IN i_publisher_id INT)
 BEGIN 
-	SELECT * FROM publishers WHERE id = i_publisher_id;
+	SELECT * FROM publishers WHERE id = i_publisher_id LIMIT 1;
 END //
 
 CREATE PROCEDURE update_publisher(	IN i_publisher_id INT,
 									IN i_name VARCHAR(255))
 BEGIN 
 	UPDATE publishers SET name  = i_name WHERE id = i_publisher_id;
+	SELECT * FROM publishers WHERE id = i_publisher_id ORDER BY id desc LIMIT 1;
 END //
 
 
@@ -122,6 +128,7 @@ END //
 CREATE PROCEDURE add_new_series(IN i_name VARCHAR(255),IN i_first_issue INT, IN i_last_issue INT, IN i_start_year INT, IN i_end_year INT,IN i_publisher_id INT)
 BEGIN
 	INSERT INTO series(name, first_issue, last_issue, start_year, end_year, publisher_id) VALUES (i_name, i_first_issue, i_last_issue, i_start_year, i_end_year, i_publisher_id);
+	SELECT * FROM series ORDER BY id desc LIMIT 1;
 END // 
 
 CREATE PROCEDURE get_specific_series(IN i_series_id INT)
@@ -132,6 +139,7 @@ END //
 CREATE PROCEDURE update_series(	IN i_series_id INT, IN i_name VARCHAR(255), IN i_first_issue INT, IN i_last_issue INT, IN i_start_year INT, IN i_end_year INT, IN i_publisher_id INT)
 BEGIN
 	UPDATE series SET name = i_name, first_issue = i_first_issue, last_issue = i_last_issue, start_year = i_start_year, end_year = i_end_year, publisher_id = i_publisher_id WHERE id = i_series_id;
+	SELECT * FROM series WHERE id = i_series_id ORDER BY id desc LIMIT 1;
 END //
 
 DELIMITER ;

@@ -34,9 +34,9 @@ class StandardErrors(Resource):
 # Comics
 class Comics(Resource):
     def get(self):
-        return build_response_auth("get_comics")
+        return build_response_auth("get_comics", session['username'])
     def post(self):
-        return build_response_auth("add_new_issue", *scrape_json('comic'))
+        return build_response_auth("add_new_issue", *scrape_json('comic', comics=True))
 class ComicsResource(Resource):
     def get(self, comic_id):
         return build_response_auth("get_issue", comic_id)
@@ -45,17 +45,17 @@ class ComicsResource(Resource):
     def delete(self, comic_id):
         return build_response_auth("delete_issue", comic_id)
 
-    @app.route("/comics/series/<int:series_id>")
+    @app.route("/comic/series/<int:series_id>")
     def get_issues_from_series(series_id):
-        return build_response_auth("get_comics_by_series", series_id)
+        return build_response_auth("get_comics_by_series", session['username'], series_id)
 
-    @app.route("/comics/publisher/<int:publisher_id>")
+    @app.route("/comic/publisher/<int:publisher_id>")
     def get_issues_from_publisher(publisher_id):
-        return build_response_auth("get_comics_by_publisher", publisher_id)
+        return build_response_auth("get_comics_by_publisher", session['username'], publisher_id)
 
-    @app.route("/comics/writer/<int:writer_id>")
+    @app.route("/comic/writer/<int:writer_id>")
     def get_issues_from_writer(writer_id):
-        return build_response_auth("get_comics_by_writer", writer_id)
+        return build_response_auth("get_comics_by_writer", session['username'], writer_id)
 
 
 # Deletes for everything but comics have been removed
@@ -93,7 +93,7 @@ class Series(Resource):
         return build_response_auth("add_new_series", *scrape_json('series'))
 class SeriesResource(Resource):
     def get(self, series_id):
-        return build_response_auth("get_series", series_id)
+        return build_response_auth("get_specific_series", series_id)
     def put(self, series_id):
         return build_response_auth("update_series", series_id, *scrape_json('series'))
     # def delete(self, series_id):

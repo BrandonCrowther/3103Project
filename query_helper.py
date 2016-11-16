@@ -24,10 +24,13 @@ def sanitize_query(*args):
     return [s.encode('utf-8') for s in args]
 
 # admittedly, this is a stupid way to do this and very unmaintainable #YOLO
-def scrape_json(table_name):
+def scrape_json(table_name, comics=False):
     json = request.get_json(silent=True)
     if not json:
         abort(400)
+    if comics:
+        json['user_id'] = session['username']
+
     ret = [] #array to return
     dic = []
     if table_name == 'comic':
@@ -41,14 +44,13 @@ def scrape_json(table_name):
     else:
         print "Could not understand dictionary " + dic
         abort(400)
-
     for key in dic:
         val = json.get(key, 'NULL')
         ret.append(val)
     return ret
 
 ## DICTIONARY FOR JSON PARSING ##
-comic = ['series_id', 'issue_number', 'grade', 'image_url', 'writer_id', 'user_id', 'month', 'year']
+comic = ['issue_number', 'series_id', 'grade', 'image_url', 'writer_id', 'user_id', 'month', 'year']
 publisher = ['name']
 series = ['name', 'first_issue', 'last_issue', 'start_year', 'end_year', 'publisher_id']
 writer = ['first_name', 'last_name']
@@ -58,11 +60,10 @@ def call_db(proc, *args):
     connection = MySQLdb.connect(host=MYSQL_HOST, user=MYSQL_USER, passwd=MYSQL_PASSWD, db=MYSQL_DB, use_unicode=True, charset='utf8')
     connection.autocommit(True)
     # redundant sanitization because paranoia
-    arguments = sanitize_query(*args)
-
+    #arguments = sanitize_query(*args)
     try:
         cursor = connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.callproc(proc, arguments)
+        cursor.callproc(proc, args)
         row = cursor.fetchall()
         return make_response(jsonify({"status": "success", "result": row}), 200)
     except Exception, e:

@@ -57,7 +57,6 @@ writer = ['first_name', 'last_name']
 def call_db(proc, *args):
     connection = MySQLdb.connect(host=MYSQL_HOST, user=MYSQL_USER, passwd=MYSQL_PASSWD, db=MYSQL_DB, use_unicode=True, charset='utf8')
     connection.autocommit(True)
-
     # redundant sanitization because paranoia
     arguments = sanitize_query(*args)
 
@@ -65,13 +64,13 @@ def call_db(proc, *args):
         cursor = connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.callproc(proc, arguments)
         row = cursor.fetchall()
-        return row
+        return make_response(jsonify({"status": "success", "result": row}), 200)
     except Exception, e:
         print e
     finally:
         cursor.close()
         connection.close()
-    abort(400)
+    return make_response(jsonify({"status": "failure"}), 400)
 
 # quickly validate and call the method passed to it
 # sidenote, I wish there was a way to force validation using decorators

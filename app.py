@@ -47,16 +47,19 @@ class ComicsResource(Resource):
 
     @app.route("/comics/series/<int:series_id>")
     def get_issues_from_series(series_id):
-        return build_response("get_comics_by_series", series_id)
+        return build_response_auth("get_comics_by_series", series_id)
 
     @app.route("/comics/publisher/<int:publisher_id>")
     def get_issues_from_publisher(publisher_id):
-        return build_response("get_comics_by_publisher", publisher_id)
+        return build_response_auth("get_comics_by_publisher", publisher_id)
 
     @app.route("/comics/writer/<int:writer_id>")
     def get_issues_from_writer(writer_id):
-        return build_response("get_comics_by_writer", writer_id)
+        return build_response_auth("get_comics_by_writer", writer_id)
 
+
+# Deletes for everything but comics have been removed
+# as a result of the database design
 class Writers(Resource):
     def get(self):
         return build_response_auth("get_writers")
@@ -67,8 +70,8 @@ class WritersResource(Resource):
         return build_response_auth("get_writer", writer_id)
     def put(self, writer_id):
         return build_response_auth("update_writer", writer_id, *scrape_json('writer'))
-    def delete(self, writer_id):
-        return build_response_auth("delete_writer", writer_id)
+    # def delete(self, writer_id):
+    #     return build_response_auth("delete_writer", writer_id)
 
 class Publishers(Resource):
     def get(self):
@@ -80,8 +83,8 @@ class PublishersResource(Resource):
         return build_response_auth("get_publisher", publisher_id)
     def put(self, publisher_id):
         return build_response_auth("update_publisher", publisher_id, *scrape_json('publisher'))
-    def delete(self, publisher_id):
-        return build_response_auth("delete_publisher", publisher_id)
+    # def delete(self, publisher_id):
+    #     return build_response_auth("delete_publisher", publisher_id)
 
 class Series(Resource):
     def get(self):
@@ -93,8 +96,8 @@ class SeriesResource(Resource):
         return build_response_auth("get_series", series_id)
     def put(self, series_id):
         return build_response_auth("update_series", series_id, *scrape_json('series'))
-    def delete(self, series_id):
-        return build_response_auth("delete_series", series_id)
+    # def delete(self, series_id):
+    #     return build_response_auth("delete_series", series_id)
 
 class SignIn(Resource):
     def post(self):
@@ -103,9 +106,9 @@ class SignIn(Resource):
     	parser = reqparse.RequestParser()
     	try:
     			# Check for required attributes in json document, create a dictionary
-     		parser.add_argument('username', type=str, required=True)
-    		parser.add_argument('password', type=str, required=True)
-    		request_params = parser.parse_args()
+            parser.add_argument('username', type=str, required=True)
+            parser.add_argument('password', type=str, required=True)
+   	    request_params = parser.parse_args()
     	except:
     		abort(400)
     	if request_params['username'] in session:
@@ -141,17 +144,15 @@ class SignIn(Resource):
     		responseCode = 403
     	return make_response(jsonify(response), responseCode)
 
-    	def delete(self):
-        	if 'username' in session:
-            		del session['username']
-            		response = {'status': 'success'}
-            		responseCode = 200
-       	 	else:
-            		response = {'status': 'fail'}
-            		responseCode = 403
-        	return make_response(jsonify(response), responseCode)
-
-
+    def delete(self):
+    	if 'username' in session:
+    		del session['username']
+                response = {'status': 'success'}
+    		responseCode = 200
+    	else:
+    		response = {'status': 'fail'}
+    		responseCode = 403
+    	return make_response(jsonify(response), responseCode)
 
 api = Api(app)
 api.add_resource(SignIn,                '/signin')

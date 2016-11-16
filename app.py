@@ -166,4 +166,4 @@ api.add_resource(SeriesResource,        '/series')
 
 if __name__ == "__main__":
     context = ('cert.pem', 'key.pem')
-    app.run(host = APP_HOST, port = APP_PORT, debug = APP_DEBUG)
+    app.run(host = APP_HOST, port = APP_PORT, debug = APP_DEBUG, ssl_context=context)

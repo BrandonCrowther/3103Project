@@ -155,12 +155,12 @@ class SignIn(Resource):
 
 api = Api(app)
 api.add_resource(SignIn,                '/signin')
-api.add_resource(Comics,                '/comics', '/comics/')
-api.add_resource(ComicsResource,        '/comics/<comic_id>')
-api.add_resource(Publishers,            '/publishers', '/publishers/')
-api.add_resource(PublishersResource,    '/publishers/<publisher_id>')
-api.add_resource(Writers,               '/writers', '/writers/')
-api.add_resource(WritersResource,       '/writers/<writer_id>')
+api.add_resource(Comics,                '/comic', '/comic/')
+api.add_resource(ComicsResource,        '/comic/<comic_id>')
+api.add_resource(Publishers,            '/publisher', '/publisher/')
+api.add_resource(PublishersResource,    '/publisher/<publisher_id>')
+api.add_resource(Writers,               '/writer', '/writer/')
+api.add_resource(WritersResource,       '/writer/<writer_id>')
 api.add_resource(Series,                '/series', '/series/')
 api.add_resource(SeriesResource,        '/series/<series_id>')
 

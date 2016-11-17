@@ -1,26 +1,37 @@
-curl -i -H "Content-Type: application/json" -X POST -d '{"username": "USERNAME HERE", "password": "PASSWORD HERE"}' -c cookie-jar -k https://info3103.cs.unb.ca:43005/signin
+NOT THAT THERE ARE SPECIFIED FIELDS YOU MUST FILL IN FOR YOUR TESTS TO SUCCEED FOR EXAMPLE {WRITER ID} REQUIRES YOU TO PICK A WRITER ID (I.E. 1) AND USE THAT INSTEAD TO CREATE A PROPER URI
+
+/*****STANDRAD LOG IN/ CHECK LOG IN*****/
+curl -i -H "Content-Type: application/json" -X POST -d '{"username": {USER NAME HERE}, "password": {PASSWORD HERE}}’ -c cookie-jar -k https://info3103.cs.unb.ca:43005/signin
 curl -i -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/signin
+
+/******ADD PUBLISHERS AND UPDATE A PUBLISHER WITH CORRECT/INCORECT DATA*****/
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"name":"Marvel"}'  -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"name":"DC"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"name":"CD"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"name":"DC"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher/1
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"name":"CD"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher/{PUBLISHER ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher/{PUBLISHER ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"name":"DC"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher/{PUBLISHER ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher/{PUBLISHER ID}
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/publisher
+
+/***** SAME FOR SERIES ********/
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"name":"Batman", "first_issue":"0", "last_issue":"52","start_year":"2011", "end_year":"2016", "publisher_id":"2"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/series
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"name":"New Avengers", "first_issue":"1", "last_issue":"17","start_year":"2015", "publisher_id":"1"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/series
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"name":"NewAvengers", "first_issue":"1", "last_issue":"17","start_year":"20000015",  "publisher_id":"1"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/series/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/series/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"name":"New Avengers", "first_issue":"1", "last_issue":"17","start_year":"2015",  "publisher_id":"1"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/series/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/series/1
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"name":"NewAvengers", "first_issue":"1", "last_issue":"17","start_year":"20000015",  "publisher_id":"1"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/series/{SERIES ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/series/{SERIES ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"name":"New Avengers", "first_issue":"1", "last_issue":"17","start_year":"2015",  "publisher_id":"1"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/series/{SERIES ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/series/{SERIES ID}
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/series
+
+/******** AND FOR WRITERS*********/
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"first_name":"Scott", "last_name":"Snyder"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"first_name":"Al", "last_name":"Ewing"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"first_name":"Scott", "last_name":"Snayday"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer/1
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"first_name":"Scott", "last_name":"Snayday"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer/{WRITER ID}
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"first_name":"Scott", "last_name":"Synder"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer/1
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"first_name":"Scott", "last_name":"Synder"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer/{WRITER ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer/{WRITER ID}
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/writer
+
+/****** ADD A COLLECTION OF COMIC BOOKS TO YOUR ACCOUNT******/
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"series_id":"1","issue_number":"1","grade":"10.0", "writer_id":"1","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"series_id":"1","issue_number":"2", "writer_id":"1","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"series_id":"1","issue_number":"3", "writer_id":"1","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic
@@ -40,14 +51,20 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST -
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"series_id":"2","issue_number":"5","writer_id":"2","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST --data '{"series_id":"2","issue_number":"6","writer_id":"2","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"series_id":"1","issue_number":"2","grade":"9.5", "writer_id":"1","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"series_id":"1","issue_number":"2","grade":"10.0","image_url":"UPDATE SUCCESSFUL", "writer_id":"1","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/1
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/1
+
+/**** UPDATE A COMIC BOOK AND DELETE IT******/
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"series_id":"1","issue_number":"2","grade":"9.5", "writer_id":"1","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/{ISSUE ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/{ISSUE ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X PUT --data '{"series_id":"1","issue_number":"2","grade":"10.0","image_url":"UPDATE SUCCESSFUL", "writer_id":"1","month":"08","year":"16"}' -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/{ISSUE ID}
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/{ISSUE ID}
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic
-curl -X DELETE -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/1
+curl -X DELETE -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/{ISSUE ID}
 curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic
-curl -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/series/1
-curl -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/publisher/1
-curl -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/writer/1
+
+/**** NARROW DOWN SEARCHES BY SPECIFIED SERIES PUBLISHERS OR WRITERS****/
+curl -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/series/{SERIES ID}
+curl -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/publisher/{PUBLISHER ID}
+curl -X GET -b cookie-jar -k https://info3103.cs.unb.ca:43005/comic/writer/{WRITER ID}
+
+/***** SIGN OUT*******/
 curl -i -H "Content-Type: application/json" -X DELETE -b cookie-jar -k https://info3103.cs.unb.ca:43005/signin

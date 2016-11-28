@@ -4,19 +4,16 @@ $(function(){
 
 
 function login(){
-	var name = $('#username').val();
-	var password = $('#password').val();
-
 	$.ajax({
 		url: "/login",
-		data: {username: name, password: password},
+		data: $('form').serialize(),
 		dataType: "json",
 		type: "POST",
 		success: function(){
-			window.alert("You are successfully logged in as " + name);
+			window.alert("You are successfully logged in.");
 		},
 		failure: function(data){
-			window.alert("Something went wrong logging in");
+			window.alert("Something went wrong logging in.");
 			console.log(data);
 		}
 	});

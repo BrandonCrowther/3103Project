@@ -1,0 +1,9 @@
+body div:first-child{
+  margin: 10%;
+  padding: 10px;
+}
+
+
+body{
+  background: url(http://cdn.wallpapersafari.com/72/27/GlVpE0.jpg) no-repeat center center fixed;
+}

@@ -1,20 +1,14 @@
-$(function(){
-	console.log("China");
-});
-
-
-function login(){
-	$.ajax({
-		url: "/login",
-		data: $('form').serialize(),
-		dataType: "json",
-		type: "POST",
-		success: function(){
-			window.alert("You are successfully logged in.");
-		},
-		failure: function(data){
-			window.alert("Something went wrong logging in.");
-			console.log(data);
-		}
-	});
-}
+angular.module('SigninApp', [])
+  .controller('SigninController', ['$scope', '$http', function($scope, $http) {
+    $scope.message = 'I love JavaScript!';
+    $scope.signin = function (user){
+      credentials = JSON.stringify({"username": user.username, "password": user.password});
+     $http.post(urlFor("/signin"), credentials ).then(function(data) {
+        if(data.status == 201) {
+          $scope.message = "You are now successfully logged in as " + data.username + "."
+       }
+       else{
+         $scope.message = "Invalid credentials."
+       }
+    });
+}}]);

@@ -25,6 +25,10 @@ class StandardErrors(Resource):
     @app.route("/")
     def start():
         return "Wow this is the default directory!\n"
+    
+    @app.route("/login")
+    def login():
+    	return render_template('login.html')
 
     @app.errorhandler(404)
     def not_found(error):

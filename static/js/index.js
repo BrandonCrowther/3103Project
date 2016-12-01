@@ -9,7 +9,7 @@
     $scope.message = "";
     $scope.signin = function (user){
 		if(user != undefined){
-	    credentials = JSON.stringify({"username": user.username, "password" || "": user.password || ""});
+	    credentials = JSON.stringify({"username": user.username, "password": user.password});
 	    $http.post(urlFor("/signin"), credentials ).then(
 				function successCallback(data) {
 					$scope.message = "You are now successfully logged in as " + data.username + "."
@@ -22,15 +22,66 @@
 	}});
 
 	app.controller('GetController', function($scope, $http, $sce) {
+    $scope.publishers =  [];
+    $scope.writers = [];
+    $scope.series = []
+    $http({
+            method: 'GET',
+            url: urlFor("/publishers"),
+            data: {}
+        }).success(function (result) {
+        //$scope.publishers = result;
+    });
+    $http({
+            method: 'GET',
+            url: urlFor("/writers"),
+            data: {}
+        }).success(function (result) {
+        //$scope.publishers = result;
+    });
+    $http({
+            method: 'GET',
+            url: urlFor("/series"),
+            data: {}
+        }).success(function (result) {
+        //$scope.publishers = result;
+    });
+
 		$scope.viewAll = function(){
-			$http.get(urlFor("/comics"), JSON.stringify({})).then(
-				function successCallback(data) {
-					$scope.body = "Working route"
-				},
-				function errorCallback(data){
-					$scope.body = "Oops I fucked up."
-				}
-	    );
+      $http({
+            method: 'GET',
+            url: urlFor("/comics"),
+            data: {}
+        }).success(function (result) {
+        $scope.content = "Success";
+      });
 		}
+    $scope.forPublisher = function(){
+      $http({
+            method: 'GET',
+            url: urlFor("/comic/publisher/" + $scope.publisher),
+            data: {}
+        }).success(function (result) {
+        $scope.content = "Success";
+      });
+    }
+    $scope.forWriter = function(){
+      $http({
+            method: 'GET',
+            url: urlFor("/comic/writer/" + $scope.writer),
+            data: {}
+        }).success(function (result) {
+        $scope.content = "Success";
+      });
+    }
+    $scope.forSeries = function(){
+      $http({
+            method: 'GET',
+            url: urlFor("/comics"),
+            data: {}
+        }).success(function (result) {
+        $scope.content = "Success";
+      });
+    }
 	});
 })(window.angular);

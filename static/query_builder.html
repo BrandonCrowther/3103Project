@@ -1,37 +1,43 @@
 <div ng-controller="GetController">
-  <div>
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#comic_tab" data-toggle="tab">Home</a></li>
-      <li><a href="#writer_tab" data-toggle="tab">Menu 1</a></li>
-      <li><a href="#" data-toggle="tab">Menu 2</a></li>
-      <li><a href="#" data-toggle="tab">Menu 3</a></li>
-    </ul>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      View Comics
+    </div>
+    <div class="panel-body">
+      <form action="">
+        <label>Search by:</label>
+        <input type="radio" name="searchType" ng-model="form" value="all"> None (View All)
+        <input type="radio" name="searchType" ng-model="form" value="publisher"> Publisher
+        <input type="radio" name="searchType" ng-model="form" value="writer"> Writer
+        <input type="radio" name="searchType" ng-model="form" value="series"> Series
+      </form>
+      <div id="username-group" class="form-group">
+        <form ng-show="form == 'all'">
+          <label>View All Comics In Your Collection</label>
+          <button type="button" class="btn btn-success" ng-click="viewAll()" >View All<span class="fa fa-arrow-right"></span></button>
+        </form>
+        <form  ng-show="form == 'publisher'">
+          <label>Filter Comics by Publisher</label>
+          <select id="publisher_list" name="publisher" placeholder="Publisher" required ng-model="publisher"
+          ng-options = "item.id as item.name for item in publishers"></select>
+          <button type="button" class="btn btn-success" ng-click="forPublisher()">View<span class="fa fa-arrow-right"></span></button>
+        </form>
+        <form ng-show="form == 'writer'">
+          <label>Filter Comics by Writer</label>
+          <select id="writer_list" name="writer" required ng-model="writer" ng-options = "item.id as item.name for item in writers"></select>
+          <button type="button" class="btn btn-success" ng-click="forWriter()">View<span class="fa fa-arrow-right"></span></button>
+        </form>
+        <form  ng-show="form == 'series'">
+          <label>Filter Comics by Series</label>
+          <select id="writer_list" name="writer" required ng-model="writer" ng-options = "item.id as item.name for item in series"></select>
+          <button type="button" class="btn btn-success" ng-click="forSeries()">View<span class="fa fa-arrow-right"></span></button>
+        </form>
+      </div>
+    </div>
   </div>
-
-  <div class="tab-content clearfix">
-    <div class="tab-pane active" id="comic_tab">
-      <form id="signinForm">
-        <div id="username-group" class="form-group">
-            <label>View All Comics In Your Collection</label>
-            <button type="button" class="btn btn-success" ng-click="signin(user)">View All<span class="fa fa-arrow-right"></span></button>
-        </div>
-      </form>
-      <form id="viewComicForm">
-        <div id="username-group" class="form-group">
-            <label>View All Comics In Your Collection</label>
-            <button type="button" class="btn btn-success" ng-click="viewAll()">View All<span class="fa fa-arrow-right"></span></button>
-        </div>
-      </form>
-      <p>{{body}}</p>
-    </div>
-    <div class="tab-pane" id="writer_tab">
-      <h3>We use the class nav-pills instead of nav-tabs which automatically creates a background color for the tab</h3>
-    </div>
-    <div class="tab-pane" id="3a">
-      <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
-    </div>
-      <div class="tab-pane" id="4a">
-      <h3>We use css to change the background color of the content to be equal to the tab</h3>
+  <div class='panel panel-primary'>
+    <div class="panel-body">
+      {{content}}
     </div>
   </div>
 </div>

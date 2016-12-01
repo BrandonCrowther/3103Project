@@ -1,6 +1,6 @@
 angular.module('SigninApp', [])
   .controller('SigninController', ['$scope', '$http', function($scope, $http) {
-    $scope.message = 'I love JavaScript!';
+    $scope.message = "";
     $scope.signin = function (user){
       credentials = JSON.stringify({"username": user.username, "password": user.password});
      $http.post(urlFor("/signin"), credentials ).then(function(data) {

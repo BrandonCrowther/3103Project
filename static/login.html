@@ -1,0 +1,15 @@
+<div class="panel panel-default" style="margin:5%;padding:10;" ng-controller="SigninController">
+  <h1>Login</h1>
+	<form id="signinForm">
+    <div id="username-group" class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="UNB Login ID" required ng-model="user.username">
+    </div>
+    <div id="password-group" class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="UNB Password" required ng-model="user.password">
+    </div>
+    <button type="button" class="btn btn-success" ng-click="signin(user)">Sign In<span class="fa fa-arrow-right"></span></button>
+    <p>{{message}}</p>
+	</form>
+</div>

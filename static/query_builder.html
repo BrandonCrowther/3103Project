@@ -1,0 +1,37 @@
+<div ng-controller="GetController">
+  <div>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#comic_tab" data-toggle="tab">Home</a></li>
+      <li><a href="#writer_tab" data-toggle="tab">Menu 1</a></li>
+      <li><a href="#" data-toggle="tab">Menu 2</a></li>
+      <li><a href="#" data-toggle="tab">Menu 3</a></li>
+    </ul>
+  </div>
+
+  <div class="tab-content clearfix">
+    <div class="tab-pane active" id="comic_tab">
+      <form id="signinForm">
+        <div id="username-group" class="form-group">
+            <label>View All Comics In Your Collection</label>
+            <button type="button" class="btn btn-success" ng-click="signin(user)">View All<span class="fa fa-arrow-right"></span></button>
+        </div>
+      </form>
+      <form id="viewComicForm">
+        <div id="username-group" class="form-group">
+            <label>View All Comics In Your Collection</label>
+            <button type="button" class="btn btn-success" ng-click="viewAll()">View All<span class="fa fa-arrow-right"></span></button>
+        </div>
+      </form>
+      <p>{{body}}</p>
+    </div>
+    <div class="tab-pane" id="writer_tab">
+      <h3>We use the class nav-pills instead of nav-tabs which automatically creates a background color for the tab</h3>
+    </div>
+    <div class="tab-pane" id="3a">
+      <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
+    </div>
+      <div class="tab-pane" id="4a">
+      <h3>We use css to change the background color of the content to be equal to the tab</h3>
+    </div>
+  </div>
+</div>

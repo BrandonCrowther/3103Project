@@ -21,20 +21,17 @@ app.config['SESSION_COOKIE_DOMAIN'] = APP_HOST
 Session(app)
 
 ## Routing ##
-class StandardErrors(Resource):
+class Root(Resource):
     @app.route("/")
     def start():
-        return "Wow this is the default directory!\n"
-    
-    @app.route("/login")
+        return app.send_static_file('index.html')
+
+    @app.route("/validate_login")
     def login():
-    	return render_template('login.html')
-
-    @app.errorhandler(404)
-    def not_found(error):
-        return make_response("404 Not Found\n", 404)
-
-
+        if not 'username' in session:
+            return app.send_static_file('query_builder.html')
+        else:
+            return app.send_static_file('login.html')
 # Comics
 class Comics(Resource):
     def get(self):
@@ -112,12 +109,13 @@ class SignIn(Resource):
     			# Check for required attributes in json document, create a dictionary
             parser.add_argument('username', type=str, required=True)
             parser.add_argument('password', type=str, required=True)
-   	    request_params = parser.parse_args()
+            request_params = parser.parse_args()
     	except:
     		abort(400)
     	if request_params['username'] in session:
     		response = {'status': 'success'}
     		responseCode = 200
+    		session['username'] = request_params['username']
     	else:
     		try:
     			l = ldap.open(LDAP_HOST)
@@ -128,7 +126,7 @@ class SignIn(Resource):
 
     			session['username'] = request_params['username']
     			response = {'status': 'success', 'username': session['username'] }
-    			print "SESSION CREATED: " + session['username']
+    			print("SESSION CREATED: " + session['username'])
     			responseCode = 201
     		except ldap.LDAPError, error_message:
     			response = {'status': 'Access denied', 'error': str(error_message)}
@@ -160,12 +158,12 @@ class SignIn(Resource):
 
 api = Api(app)
 api.add_resource(SignIn,                '/signin')
-api.add_resource(Comics,                '/comic', '/comic/')
-api.add_resource(ComicsResource,        '/comic/<comic_id>')
-api.add_resource(Publishers,            '/publisher', '/publisher/')
-api.add_resource(PublishersResource,    '/publisher/<publisher_id>')
-api.add_resource(Writers,               '/writer', '/writer/')
-api.add_resource(WritersResource,       '/writer/<writer_id>')
+api.add_resource(Comics,                '/comic', '/comic/', '/comics', '/comics/')
+api.add_resource(ComicsResource,        '/comic/<comic_id>', '/comics/<comic_id>')
+api.add_resource(Publishers,            '/publisher', '/publisher/', '/publishers', '/publishers/')
+api.add_resource(PublishersResource,    '/publisher/<publisher_id>', '/publishers/<publisher_id>')
+api.add_resource(Writers,               '/writer', '/writer/', '/writers', '/writers/')
+api.add_resource(WritersResource,       '/writer/<writer_id>', '/writers/<writer_id>')
 api.add_resource(Series,                '/series', '/series/')
 api.add_resource(SeriesResource,        '/series/<series_id>')
 

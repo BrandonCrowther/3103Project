@@ -9,11 +9,7 @@
     $scope.message = "";
     $scope.signin = function (user){
 		if(user != undefined){
-<<<<<<< HEAD
 	    credentials = JSON.stringify({"username": user.username, "password": user.password});
-=======
-	    credentials = JSON.stringify({"username": user.username, "password" || "": user.password || ""});
->>>>>>> refs/remotes/origin/master
 	    $http.post(urlFor("/signin"), credentials ).then(
 				function successCallback(data) {
 					$scope.message = "You are now successfully logged in as " + data.username + "."
@@ -26,7 +22,6 @@
 	}});
 
 	app.controller('GetController', function($scope, $http, $sce) {
-<<<<<<< HEAD
     $scope.publishers =  [];
     $scope.writers = [];
     $scope.series = []
@@ -88,17 +83,5 @@
         $scope.content = "Success";
       });
     }
-=======
-		$scope.viewAll = function(){
-			$http.get(urlFor("/comics"), JSON.stringify({})).then(
-				function successCallback(data) {
-					$scope.body = "Working route"
-				},
-				function errorCallback(data){
-					$scope.body = "Oops I fucked up."
-				}
-	    );
-		}
->>>>>>> refs/remotes/origin/master
 	});
 })(window.angular);

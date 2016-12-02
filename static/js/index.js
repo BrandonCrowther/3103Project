@@ -2,7 +2,7 @@
 	var app = angular.module('BaseApp', []);
 
 	app.controller('BaseController', function($scope, $http, $sce) {
-
+		//unused now. did a bunch of testing here
 	});
 
   app.controller('SigninController', function($scope, $http, $sce) {

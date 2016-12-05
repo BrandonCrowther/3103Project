@@ -28,6 +28,8 @@ class Root(Resource):
 
     @app.route("/validate_login")
     def login():
+	print "Validation entered"
+	print session
         if not 'username' in session:
             return app.send_static_file('query_builder.html')
         else:

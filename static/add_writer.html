@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Add Writer</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+	</head>
+	<body ng-app="AddWriterApp">
+		<h1>Add Writer</h1>
+		<div ng-controller="AddWriterController">
+			<form id="AddWriterForm">
+				<div id="firstnam-group" class="form-group row">
+					<label for="firstnam" class="control-label col-sm-2">First Name: </label>
+					<div class="col-sm-10">
+						<input type="text" id="firstnam" name="firstnam" placeholder="Enter Their First Name" class="form-control" required ng-model="writer.first_name">
+					</div>
+				</div>
+				<div id="lastnam-group" class="form-group row">
+					<label for="lastnam" class="control-label col-sm-2">Last Name: </label>
+					<div class="col-sm-10">
+						<input type="text" id="lastnam" name="lastnam" placeholder="Enter Their Last Name" class="form-control" required ng-model="writer.last_name">
+					</div>
+				</div>
+				<div id="submit-button" class="form-group row">
+					<div class="col-sm-2">
+						<button id="add-comic-button" class="btn-success btn" ng-click="addWriter(writer)">Submit</button>
+					</div>
+				</div>
+			</form>
+			<script>
+		   	 angular.module('AddWriterApp', [])
+	  			.controller('AddWriterController', ['$scope', '$http', function($scope, $http) {	
+		 		 	$scope.addWriter = function (writer){
+		 		 		console.log("hello world: " +JSON.stringify(writer));
+		 		 	}
+				}]);
+			</script>
+		</div>
+	</body>
+</html>

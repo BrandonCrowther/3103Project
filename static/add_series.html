@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Add Series</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+  		<script type="text/ng-template" id="home.html">
+  		This is the Home template
+		</script>
+	</head>
+	<body ng-app="AddSeriesApp">
+		<h1>Add Series</h1>
+		<div ng-controller="AddSeriesController">
+			<form id="AddSeriesForm">
+				<div id="name-group" class="form-group row">
+					<label for="name" class="control-label col-sm-2">Name: </label>
+					<div class="col-sm-10">
+						<input type="text" id="name" name="name" placeholder="Enter The Name" class="form-control" required ng-model="series.name">
+					</div>
+				</div>
+				<div id="start-group" class="form-group row">
+					<label for="startyear" class="control-label col-sm-2">Start Year: </label>
+					<div class="col-sm-10">
+						<input type="text" id="startyear" name="startyear" placeholder="Enter The Start Year" class="form-control" required ng-model="series.start_year">
+					</div>
+				</div>
+				<div id="end-group" class="form-group row">
+					<label for="endyear" class="control-label col-sm-2">End Year: </label>
+					<div class="col-sm-10">
+						<input type="text" id="endyear" name="endyear" placeholder="Enter The End Year" class="form-control" ng-model="series.end_year">
+					</div>
+				</div>
+				<div id="first-group" class="form-group row">
+					<label for="firstissue" class="control-label col-sm-2">First Issue: </label>
+					<div class="col-sm-10">
+						<input type="text" id="firstissue" name="firstissue" placeholder="Enter The First Issue" class="form-control" required ng-model="series.first_issue">
+					</div>
+				</div>
+				<div id="last-group" class="form-group row">
+					<label for="lastissue" class="control-label col-sm-2">Last Issue: </label>
+					<div class="col-sm-10">
+						<input type="text" id="lastissue" name="lastissue" placeholder="Enter The Last Issue" class="form-control" ng-model="series.last_issue">
+					</div>
+				</div>
+				<div id="publisher-group" class="form-group row">
+					<label for="publisher" class="control-label col-sm-2">Publisher: </label>
+					<div class="col-sm-10">
+						<select required name="choosePublisher" 
+								ng-model="series.publisher" 
+								ng-options="item.id as item.name for item in publishers track by item.id"
+								class="input-clarge ng-pristine ng-valid"><option value="">Select a Publisher</option></select>
+					</div>
+				</div>
+				<div id="submit-button" class="form-group row">
+					<div class="col-sm-2">
+						<button id="add-comic-button" class="btn-success btn" ng-click="addSeries(series)">Submit</button>
+					</div>
+				</div>
+			</form>
+			<script>
+		   	 angular.module('AddSeriesApp', [])
+	  			.controller('AddSeriesController', ['$scope', '$http', function($scope, $http) {	
+  					$scope.publishers = [{"id":"1","name":"DC"}, {"id":"2","name":"Marvel"}];
+		 		 	$scope.addSeries = function (series){
+		 		 		console.log("hello world: " +JSON.stringify(series));
+		 		 	}
+				}]);
+		</script>
+		</div>
+		<div ng-include="home.html"></div>
+	</body>
+</html>

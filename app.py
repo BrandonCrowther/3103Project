@@ -30,7 +30,7 @@ class Root(Resource):
     def login():
 	print "Validation entered"
 	print session
-        if not 'username' in session:
+        if 'username' in session:
             return app.send_static_file('query_builder.html')
         else:
             return app.send_static_file('login.html')

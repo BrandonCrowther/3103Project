@@ -24,7 +24,7 @@
         </form>
         <form ng-show="form == 'writer'">
           <label>Filter Comics by Writer</label>
-          <select id="writer_list" name="writer" required ng-model="writer" ng-options = "item.id as item.name for item in writers"></select>
+          <select id="writer_list" name="writer" required ng-model="writer" ng-options = "item.id as (item.first_name + ' ' + item.last_name) for item in writers"></select>
           <button type="button" class="btn btn-success" ng-click="forWriter()">View<span class="fa fa-arrow-right"></span></button>
         </form>
         <form  ng-show="form == 'series'">
@@ -37,7 +37,17 @@
   </div>
   <div class='panel panel-primary'>
     <div class="panel-body">
-      {{content}}
+      <table>
+        <tr>
+          <th>Comic Cover</th>
+          <th>Comic</th>
+          <th></th>
+        </tr>
+        <tr ng-repeat = "comic in comics">
+          <td><img src="{{comic.image_url if comic.image_url != 'NULL'}}"></img></td>
+          <td>{{comic.name}}</td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>

@@ -1,11 +1,21 @@
 (function(angular){
 	var app = angular.module('BaseApp', []);
 
+	app.directive('includeReplace', function () {
+		return {
+			require: 'ngInclude',
+			restrict: 'A', /* optional */
+			link: function (scope, el, attrs) {
+				el.replaceWith(el.children());
+			}
+		};
+	});
+
 	app.filter("trust", ['$sce', function($sce) {
 		return function(htmlCode){
 			return $sce.trustAsHtml(htmlCode);
 		}}]
-	);
+	); //remove later
 
 	app.controller('BaseController', function($scope, $http, $sce) {
 		$http({
@@ -22,27 +32,29 @@
 				url: urlFor("/login"),
 				data: {}
 			}).success(function (result) {
-				$scope.body = result;
+				location.reload();
+			}).error(function(result){
+				location.reload();
 			});
 		}
 	});
 
 	app.controller('SigninController', function($scope, $http, $sce) {
-		$scope.signin = function (user){
+		$scope.signIn = function (user){
 			if(user != undefined){
 				if(user.username != undefined && user.password != undefined){
 					credentials = JSON.stringify({"username": user.username, "password": user.password});
 					$http({ //successfully sign in
 						method: 'POST',
 						url: urlFor("/signin"),
-						data: {}
+						data: credentials
 					}).success(function (result) {
 						$http({ //re-render the index page here
 							method: 'GET',
 							url: urlFor("/validate_login"),
 							data: {}
 						}).success(function (result) {
-							$scope.self = result
+							location.reload();
 						});
 					});
 				}
@@ -53,27 +65,29 @@
 	app.controller('GetController', function($scope, $http, $sce) {
 		$scope.publishers =  [];
 		$scope.writers = [];
-		$scope.series = []
+		$scope.series = [];
+		$scope.comics = [];
+
 		$http({
 			method: 'GET',
 			url: urlFor("/publishers"),
 			data: {}
 		}).success(function (result) {
-			//$scope.publishers = result;
+			$scope.publishers = result.result;
 		});
 		$http({
 			method: 'GET',
 			url: urlFor("/writers"),
 			data: {}
 		}).success(function (result) {
-			//$scope.publishers = result;
+			$scope.writers = result.result;
 		});
 		$http({
 			method: 'GET',
 			url: urlFor("/series"),
 			data: {}
 		}).success(function (result) {
-			//$scope.publishers = result;
+			$scope.series = result.result;
 		});
 
 		$scope.viewAll = function(){
@@ -82,7 +96,7 @@
 				url: urlFor("/comics"),
 				data: {}
 			}).success(function (result) {
-				$scope.content = "Success";
+				$scope.comics = result.result;
 			});
 		}
 		$scope.forPublisher = function(){
@@ -91,7 +105,8 @@
 				url: urlFor("/comic/publisher/" + $scope.publisher),
 				data: {}
 			}).success(function (result) {
-				$scope.content = "Success";
+				$scope.comics = result.result;
+				console.log(result);
 			});
 		}
 		$scope.forWriter = function(){
@@ -100,7 +115,7 @@
 				url: urlFor("/comic/writer/" + $scope.writer),
 				data: {}
 			}).success(function (result) {
-				$scope.content = "Success";
+				$scope.comics = result.result;
 			});
 		}
 		$scope.forSeries = function(){
@@ -109,7 +124,7 @@
 				url: urlFor("/comics"),
 				data: {}
 			}).success(function (result) {
-				$scope.content = "Success";
+				$scope.comics = result.result;
 			});
 		}
 

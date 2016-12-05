@@ -28,8 +28,6 @@ class Root(Resource):
 
     @app.route("/validate_login")
     def login():
-	print "Validation entered"
-	print session
         if 'username' in session:
             return app.send_static_file('query_builder.html')
         else:
@@ -151,7 +149,7 @@ class SignIn(Resource):
     def delete(self):
     	if 'username' in session:
     		del session['username']
-                response = {'status': 'success'}
+    		response = {'status': 'success'}
     		responseCode = 200
     	else:
     		response = {'status': 'fail'}
@@ -159,7 +157,7 @@ class SignIn(Resource):
     	return make_response(jsonify(response), responseCode)
 
 api = Api(app)
-api.add_resource(SignIn,                '/signin')
+api.add_resource(SignIn,                '/signin', '/login')
 api.add_resource(Comics,                '/comic', '/comic/', '/comics', '/comics/')
 api.add_resource(ComicsResource,        '/comic/<comic_id>', '/comics/<comic_id>')
 api.add_resource(Publishers,            '/publisher', '/publisher/', '/publishers', '/publishers/')

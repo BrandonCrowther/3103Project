@@ -20,32 +20,37 @@
           <label>Filter Comics by Publisher</label>
           <select id="publisher_list" name="publisher" placeholder="Publisher" required ng-model="publisher"
           ng-options = "item.id as item.name for item in publishers"></select>
-          <button type="button" class="btn btn-success" ng-click="forPublisher()">View<span class="fa fa-arrow-right"></span></button>
+          <button type="button" class="btn btn-success" ng-click="forPublisher(publisher)">View<span class="fa fa-arrow-right"></span></button>
         </form>
         <form ng-show="form == 'writer'">
           <label>Filter Comics by Writer</label>
-          <select id="writer_list" name="writer" required ng-model="writer" ng-options = "item.id as (item.first_name + ' ' + item.last_name) for item in writers"></select>
-          <button type="button" class="btn btn-success" ng-click="forWriter()">View<span class="fa fa-arrow-right"></span></button>
+          <select id="writer_list" name="writer" required ng-model="writer" ng-options = "item.id as item.name for item in writers"></select>
+          <button type="button" class="btn btn-success" ng-click="forWriter(writer)">View<span class="fa fa-arrow-right"></span></button>
         </form>
         <form  ng-show="form == 'series'">
           <label>Filter Comics by Series</label>
           <select id="writer_list" name="writer" required ng-model="writer" ng-options = "item.id as item.name for item in series"></select>
-          <button type="button" class="btn btn-success" ng-click="forSeries()">View<span class="fa fa-arrow-right"></span></button>
+          <button type="button" class="btn btn-success" ng-click="forSeries(series)">View<span class="fa fa-arrow-right"></span></button>
         </form>
       </div>
     </div>
   </div>
   <div class='panel panel-primary'>
     <div class="panel-body">
-      <table>
+      <table class='table table-hover table-bordered'>
         <tr>
           <th>Comic Cover</th>
+          <th>Issue Number</th>
           <th>Comic</th>
-          <th></th>
+          <th>Writer</th>
+          <th>Year</th>
         </tr>
-        <tr ng-repeat = "comic in comics">
-          <td><img src="{{comic.image_url if comic.image_url != 'NULL'}}"></img></td>
-          <td>{{comic.name}}</td>
+        <tr ng-repeat="comic in comics">
+          <td>{{comic.id}} temp</td>
+          <td>{{comic.issue_number}}</td>
+          <td>{{comic.issue_name}}</td>
+          <td>{{comic.writer_name}}</td>
+          <td>{{comic.year}}</td>
         </tr>
       </table>
     </div>

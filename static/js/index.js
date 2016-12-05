@@ -80,7 +80,16 @@
 			url: urlFor("/writers"),
 			data: {}
 		}).success(function (result) {
-			$scope.writers = result.result;
+			var writers = [];
+			result.result.forEach(function(ele){
+				writers.push( //rebinding
+					{
+						id: ele['id'],
+						name: ele['first_name'] + " " + ele['last_name']
+					});
+			});
+			console.log(writers);
+			$scope.writers = writers;
 		});
 		$http({
 			method: 'GET',
@@ -90,43 +99,38 @@
 			$scope.series = result.result;
 		});
 
-		$scope.viewAll = function(){
+
+		function getTableRequest(url, data){
+			data = data || {};
 			$http({
 				method: 'GET',
-				url: urlFor("/comics"),
+				url: urlFor(url),
 				data: {}
 			}).success(function (result) {
 				$scope.comics = result.result;
-			});
-		}
-		$scope.forPublisher = function(){
-			$http({
-				method: 'GET',
-				url: urlFor("/comic/publisher/" + $scope.publisher),
-				data: {}
-			}).success(function (result) {
-				$scope.comics = result.result;
-				console.log(result);
-			});
-		}
-		$scope.forWriter = function(){
-			$http({
-				method: 'GET',
-				url: urlFor("/comic/writer/" + $scope.writer),
-				data: {}
-			}).success(function (result) {
-				$scope.comics = result.result;
-			});
-		}
-		$scope.forSeries = function(){
-			$http({
-				method: 'GET',
-				url: urlFor("/comics"),
-				data: {}
-			}).success(function (result) {
-				$scope.comics = result.result;
+				// doing some janky client-side joins here
+				// WE KNOW WE SHOULD HAVE JUST DONE A SINGLE SQL TABLE AT THIS POINT
+				$scope.comics.forEach(function(ele){
+					ele.issue_name = iterateOver($scope.series, ele.issue_number, 'name');
+					ele.writer_name = iterateOver($scope.writers, ele.writer_id, 'name');
+				});
+				console.log($scope.comics);
 			});
 		}
 
+		function iterateOver(array, id, column){
+			var ret = "Not found";
+			array.forEach(function(ele){
+				if(ele['id'] == id){
+					ret = ele[column];
+				}
+			});
+			return ret;
+		}
+
+		$scope.viewAll = function(){return getTableRequest("/comics")};
+		$scope.forPublisher = function(pub){return getTableRequest("/comic/publisher/"+pub)};
+		$scope.forWriter = function(wri){return getTableRequest("/comic/writer/"+wri)};
+		$scope.forSeries = function(ser){return getTableRequest("/comic/series/"+ser)};
 	});
 })(window.angular);

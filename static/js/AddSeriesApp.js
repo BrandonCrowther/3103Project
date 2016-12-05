@@ -1,7 +1,22 @@
 angular.module('AddSeriesApp', [])
 	.controller('AddSeriesController', ['$scope', '$http', function($scope, $http) {	
-  		$scope.publishers = [{"id":"1","name":"DC"}, {"id":"2","name":"Marvel"}];
+  		$scope.series_message = "";
+  		$scope.publishers = function(){
+			$http({
+				method: 'GET',
+				url: urlFor("/publishers"),
+				data: {}
+			}).success(function (result) {
+				$scope.body = result;
+			});
+		}
 		$scope.addSeries = function (series){
-			console.log("hello world: " +JSON.stringify(series));
+			$http({
+				method = 'POST', 
+				url = urlFor("/series"),
+				data: series
+			}).success(function (){
+				$scope.series_message = "SUCCESS!!"
+			}
 		}
 }]);

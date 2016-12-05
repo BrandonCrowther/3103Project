@@ -129,4 +129,82 @@
 		}
 
 	});
+	
+	app.controller('AddBookController', function($scope, $http, $sce){	
+		$scope.book_message = "";
+		$scope.writers = function(){
+			$http({
+				method: 'GET',
+				url: urlFor("/writers"),
+				data: {}
+			}).success(function (result) {
+				$scope.body = result;
+			});
+		}
+		$scope.series = function(){
+			$http({
+				method: 'GET',
+				url: urlFor("/publishers"),
+				data: {}
+			}).success(function (result) {
+				$scope.body = result;
+			});
+		}
+		$scope.addComicBook = function (comic){
+			$http({
+				method: 'POST', 
+				url : urlFor("/comic"),
+				data: comic
+			}).success(function (){
+				$scope.book_message = "SUCCESS!!"
+			})	
+		}
+	});
+	
+	app.controller('AddPubController',  function($scope, $http, $sce) {	
+		$scope.pub_message = "";
+		$scope.addPublisher = function (publisher){
+			$http({
+				method: 'POST', 
+				url: urlFor("/publishers"),
+				data: publisher
+			}).success(function (){
+				$scope.pub_message = "SUCCESS!!"
+			})
+		}});
+		
+	app.controller('AddSeriesController', ['$scope', '$http', function($scope, $http) {	
+  		$scope.series_message = "";
+  		$scope.publishers = function(){
+			$http({
+				method: 'GET',
+				url: urlFor("/publishers"),
+				data: {}
+			}).success(function (result) {
+				$scope.body = result;
+			});
+		}
+		$scope.addSeries = function (series){
+			$http({
+				method: 'POST', 
+				url: urlFor("/series"),
+				data: series
+			}).success(function (){
+				$scope.series_message = "SUCCESS!!"
+			})
+		}
+	}]);
+	
+	app.controller('AddWriterController', ['$scope', '$http', function($scope, $http) {	
+	 	$scope.writer_message = "";
+	 	$scope.addWriter = function (writer){
+			$http({
+				method: 'POST', 
+				url: urlFor("/publishers"),
+				data: writer
+			}).success(function (){
+				$scope.writer_message = "SUCCESS!!"
+			})
+	 	}
+	}]);
 })(window.angular);

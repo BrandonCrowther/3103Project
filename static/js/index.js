@@ -210,4 +210,35 @@
 			})
 	 	}
 	}]);
+	app.controller('UpdateController', ['$scope', '$http', function($scope, $http) {
+ 		$scope.comic = [];
+ 		$http({
+ 			method: 'GET',
+ 			url: urlFor("/comic")+uri
+ 			data: {}
+ 		}).success{function(result){
+ 		$scope.comic = result.result;
+ 		}}
+ 		$scope.writers =[];
+ 		$http({
+ 			method: 'GET',
+ 			url: urlFor("/writers")
+ 			data: {}
+ 		}).success{function(result){
+ 		$scope.writers = result.result;
+ 		}}
+ 		$scope.comic.writer_d = $scope.writers[parseInt($scope.comic.writer_id)-1];
+ 		$scope.series =[];
+ 		$http({
+ 			method: 'GET',
+ 			url: urlFor("/series")
+ 			data: {}
+ 		}).success{function(result){
+ 		$scope.series = result.result;
+ 		}}
+ 		$scope.comic.series_id = $scope.series[parseInt($scope.comic.series_id)-1];
+ 		$scope.addComicBook = function (comic){
+ 			console.log("hello world: " +JSON.stringify(comic));
+ 	 	}
+ 				}]);
 })(window.angular);

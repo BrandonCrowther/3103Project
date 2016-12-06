@@ -29,7 +29,7 @@
         </form>
         <form  ng-show="form == 'series'">
           <label>Filter Comics by Series</label>
-          <select id="writer_list" name="writer" required ng-model="writer" ng-options = "item.id as item.name for item in series"></select>
+          <select id="writer_list" name="writer" required ng-model="series" ng-options = "item.id as item.name for item in series"></select>
           <button type="button" class="btn btn-success" ng-click="forSeries(series)">View<span class="fa fa-arrow-right"></span></button>
         </form>
       </div>
@@ -43,13 +43,15 @@
           <th>Issue Number</th>
           <th>Comic</th>
           <th>Writer</th>
+          <th>Month</th>
           <th>Year</th>
         </tr>
         <tr ng-repeat="comic in comics">
-          <td>{{comic.id}} temp</td>
+          <td><img src="{{comic.image_url}}" alt="Comic Cover Image"></img></td>
           <td>{{comic.issue_number}}</td>
           <td>{{comic.issue_name}}</td>
           <td>{{comic.writer_name}}</td>
+          <td>{{comic.month}}</td>
           <td>{{comic.year}}</td>
         </tr>
       </table>

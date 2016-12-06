@@ -100,8 +100,7 @@
 		});
 
 
-		function getTableRequest(url, data){
-			data = data || {};
+		function getTableRequest(url){
 			$http({
 				method: 'GET',
 				url: urlFor(url),
@@ -110,11 +109,11 @@
 				$scope.comics = result.result;
 				// doing some janky client-side joins here
 				// WE KNOW WE SHOULD HAVE JUST DONE A SINGLE SQL TABLE AT THIS POINT
+				// POINT OF NO RETURN NO DOCKED MARKS PLS
 				$scope.comics.forEach(function(ele){
 					ele.issue_name = iterateOver($scope.series, ele.issue_number, 'name');
 					ele.writer_name = iterateOver($scope.writers, ele.writer_id, 'name');
 				});
-				console.log($scope.comics);
 			});
 		}
 
@@ -133,8 +132,8 @@
 		$scope.forWriter = function(wri){return getTableRequest("/comic/writer/"+wri)};
 		$scope.forSeries = function(ser){return getTableRequest("/comic/series/"+ser)};
 	});
-	
-	app.controller('AddBookController', function($scope, $http, $sce){	
+
+	app.controller('AddBookController', function($scope, $http, $sce){
 		$scope.book_message = "";
 		$scope.writers = function(){
 			$http({
@@ -156,28 +155,28 @@
 		}
 		$scope.addComicBook = function (comic){
 			$http({
-				method: 'POST', 
+				method: 'POST',
 				url : urlFor("/comic"),
 				data: comic
 			}).success(function (){
 				$scope.book_message = "SUCCESS!!"
-			})	
+			})
 		}
 	});
-	
-	app.controller('AddPubController',  function($scope, $http, $sce) {	
+
+	app.controller('AddPubController',  function($scope, $http, $sce) {
 		$scope.pub_message = "";
 		$scope.addPublisher = function (publisher){
 			$http({
-				method: 'POST', 
+				method: 'POST',
 				url: urlFor("/publishers"),
 				data: publisher
 			}).success(function (){
 				$scope.pub_message = "SUCCESS!!"
 			})
 		}});
-		
-	app.controller('AddSeriesController', ['$scope', '$http', function($scope, $http) {	
+
+	app.controller('AddSeriesController', ['$scope', '$http', function($scope, $http) {
   		$scope.series_message = "";
   		$scope.publishers = function(){
 			$http({
@@ -190,7 +189,7 @@
 		}
 		$scope.addSeries = function (series){
 			$http({
-				method: 'POST', 
+				method: 'POST',
 				url: urlFor("/series"),
 				data: series
 			}).success(function (){
@@ -198,12 +197,12 @@
 			})
 		}
 	}]);
-	
-	app.controller('AddWriterController', ['$scope', '$http', function($scope, $http) {	
+
+	app.controller('AddWriterController', ['$scope', '$http', function($scope, $http) {
 	 	$scope.writer_message = "";
 	 	$scope.addWriter = function (writer){
 			$http({
-				method: 'POST', 
+				method: 'POST',
 				url: urlFor("/publishers"),
 				data: writer
 			}).success(function (){

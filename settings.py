@@ -1,7 +1,7 @@
 #/usr/bin/env python
 
 APP_HOST = "info3103.cs.unb.ca"
-APP_PORT =  43005	# no quotes - it's a number!
+APP_PORT =  43006	# no quotes - it's a number!
 APP_DEBUG = True
 
 COOKIES_SESSION_TYPE = 'filesystem'

@@ -51,16 +51,16 @@
         <tr ng-repeat="comic in comics">
           <td><img src="{{comic.image_url}}" alt="Comic Cover Image"></img></td>
           <td>{{comic.issue_number}}</td>
-          <td>{{series[comic.series_id-1].name}}</td>
+          <td>{{serieses[comic.series_id-1].name}}</td>
           <td>{{comic.writer_name}}</td>
           <td>{{comic.month}}</td>
           <td>{{comic.year}}</td>
-	  <td><div type="button" class="btn btn-default btn-lg" ng-click="">
-  			<span class="glyphicon glyphicon-upload" aria-hidden="true" style="color:navy"></span> 
+	  <td><div type="button" class="btn btn-default btn-lg" ng-click="editComic(comic)">
+  			<span class="glyphicon glyphicon-upload" aria-hidden="true" style="color:navy"></span>
 		</div>
 	  </td>
           <td>  <div type="button" class="btn btn-default btn-lg" ng-click="removeComic(comic)">
-  			<span class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span> 
+  			<span class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"></span>
 		</div>
 	</td>
         </tr>

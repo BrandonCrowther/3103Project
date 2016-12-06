@@ -24,7 +24,6 @@ Session(app)
 class Root(Resource):
     @app.route("/")
     def start():
-        print session
         return app.send_static_file('index.html')
 
     @app.route("/validate_login")
@@ -49,6 +48,11 @@ class Root(Resource):
     @app.route('/view_add_writer')
     def view_add_writer():
         return app.send_static_file('add_writer.html')
+
+    @app.route('/view_edit_comic')
+    def edit_comic():
+        return app.send_static_file('update_comic_book.html')
+
 
 # Comics
 class Comics(Resource):

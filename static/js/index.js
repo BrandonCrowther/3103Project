@@ -112,6 +112,24 @@
 		$scope.forPublisher = function(pub){return getTableRequest("/comic/publisher/"+pub)};
 		$scope.forWriter = function(wri){return getTableRequest("/comic/writer/"+wri)};
 		$scope.forSeries = function(ser){return getTableRequest("/comic/series/"+ser)};
+		$scope.removeComic = function(comic){
+			$http.delete(urlFor("/comic/"+comic.id),{}).success(function(result){
+				var index = -1;
+				for (var i = 0; i <$scope.comics.length; i++) 
+				{
+					if($scope.comics[i].id === comic.id)
+					{
+						index=i;
+						break;
+					}
+				}
+				if(index===-1)
+				{
+					alert("Comic not found!");
+				}
+				$scope.comics.splice(index,1);
+			});
+		}
 	});
 
 	app.controller('AddBookController', function($scope, $http, $sce){
@@ -133,6 +151,7 @@
 				$scope.series = result.result;
 			});
 		$scope.addComicBook = function (comic){
+			console.log(JSON.stringify(comic));
 			$http({
 				method: 'POST',
 				url : urlFor("/comic"),
@@ -192,28 +211,28 @@
  		$scope.comic = [];
  		$http({
  			method: 'GET',
- 			url: urlFor("/comic")+uri
+ 			url: urlFor("/comic"),
  			data: {}
- 		}).success{function(result){
+ 		}).success(function(result){
  		$scope.comic = result.result;
- 		}}
+ 		});
  		$scope.writers =[];
  		$http({
  			method: 'GET',
- 			url: urlFor("/writers")
+ 			url: urlFor("/writers"),
  			data: {}
- 		}).success{function(result){
+ 		}).success(function(result){
  		$scope.writers = result.result;
- 		}}
+ 		});
  		$scope.comic.writer_d = $scope.writers[parseInt($scope.comic.writer_id)-1];
  		$scope.series =[];
  		$http({
  			method: 'GET',
- 			url: urlFor("/series")
+ 			url: urlFor("/series"),
  			data: {}
- 		}).success{function(result){
+ 		}).success(function(result){
  		$scope.series = result.result;
- 		}}
+ 		});
  		$scope.comic.series_id = $scope.series[parseInt($scope.comic.series_id)-1];
  		$scope.addComicBook = function (comic){
  			console.log("hello world: " +JSON.stringify(comic));

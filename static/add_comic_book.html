@@ -5,7 +5,7 @@
 			<label for="series" class="control-label col-sm-2">Series: </label>
 			<div class="col-sm-10">
 				<select required name="chooseSeries"
-						ng-model="comic.series"
+						ng-model="comic.series_id"
 						ng-options="item.id as item.name for item in series track by item.id"
 						class="input-clarge ng-pristine ng-valid"><option value="">Select a Series</option></select>
 			</div>
@@ -13,7 +13,7 @@
 		<div id="issuenumber-group" class="form-group row">
 			<label for="issuenumber" class="control-label col-sm-2">Issue Number: </label>
 			<div class="col-sm-10">
-				<input type="text" id="issuenumber" name="issuenumber" placeholder="Enter The Issue Number" class="form-control" required ng-model="comic.issuenumber">
+				<input type="text" id="issuenumber" name="issuenumber" placeholder="Enter The Issue Number" class="form-control" required ng-model="comic.issue_number">
 			</div>
 		</div>
 		<div id="grade-group" class="form-group row">
@@ -25,14 +25,14 @@
 		<div id="imageurl-group" class="form-group row">
 			<label for="imageurl" class="control-label col-sm-2">Image URL: </label>
 			<div class="col-sm-10">
-				<input type="text" id="imageurl" name="imageurl" placeholder="Enter The Image URL" class="form-control" ng-model="comic.imageurl">
+				<input type="text" id="imageurl" name="imageurl" placeholder="Enter The Image URL" class="form-control" ng-model="comic.image_url">
 			</div>
 		</div>
 		<div id="writer-group" class="form-group row">
 			<label for="writer" class="control-label col-sm-2">Writer: </label>
 			<div class="col-sm-10">
 				<select name="chooseWriter"
-						ng-model="comic.writer"
+						ng-model="comic.writer_id"
 						ng-options="item.id as item.first_name for item in writers track by item.id"
 						class="input-clarge ng-pristine ng-valid"><option value="">Select a Writer</option></select>
 			</div>

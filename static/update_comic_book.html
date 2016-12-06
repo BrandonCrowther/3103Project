@@ -1,0 +1,61 @@
+<h1>Update Comic Book</h1>
+<div ng-controller="UpdateController">
+<form id="UpdateBookForm">
+ 	<div id="series-group" class="form-group row">
+ 		<label for="series" class="control-label col-sm-2">Series: </label>
+ 		<div class="col-sm-10">
+ 			<select required name="chooseSeries" 
+ 					ng-model="comic.series_id" 
+ 					ng-options="item.id as item.name for item in series track by item.id"
+ 					class="input-clarge ng-pristine ng-valid"><option value="">Select a Series</option></select>
+ 		</div>
+ 	</div>
+ 	<div id="issuenumber-group" class="form-group row">
+ 		<label for="issuenumber" class="control-label col-sm-2">Issue Number: </label>
+ 		<div class="col-sm-10">
+ 			<input type="text" id="issuenumber" name="issuenumber" placeholder="Enter The Issue Number" class="form-control" required ng-model="comic.issue_number">
+ 		</div>
+ 	</div>
+ 	<div id="grade-group" class="form-group row">
+ 		<label for="issuenumber" class="control-label col-sm-2">Grade: </label>
+ 		<div class="col-sm-10">
+ 			<input type="text" id="grade" name="grade" placeholder="Enter The Grade" class="form-control" ng-model="comic.grade">
+ 		</div>
+ 	</div>
+ 	<div id="imageurl-group" class="form-group row">
+ 		<label for="imageurl" class="control-label col-sm-2">Image URL: </label>
+ 		<div class="col-sm-10">
+ 			<input type="text" id="imageurl" name="imageurl" placeholder="Enter The Image URL" class="form-control" ng-model="comic.image_url">
+ 		</div>
+ 	</div>
+ 	<div id="writer-group" class="form-group row">
+ 		<label for="writer" class="control-label col-sm-2">Writer: </label>
+ 		<div class="col-sm-10">
+ 				<select name="chooseWriter" 
+ 					ng-model="comic.writer_id" 
+ 					ng-options="item.id as item.first_name for item in writers track by item.id"
+ 					class="input-clarge ng-pristine ng-valid"><option value="">Select a Writer</option></select>
+ 		</div>
+ 	</div>
+ 	<div id="month-group" class="form-group row">
+ 			<label for="month" class="control-label col-sm-2">Month: </label>
+ 		<div class="col-sm-10">
+			<input type="text" id="month" name="month" placeholder="Enter The Month" class="form-control" ng-model="comic.month">
+		</div>
+ 	</div>
+ 	<div id="year-group" class="form-group row">
+ 		<label for="year" class="control-label col-sm-2">Year: </label>
+ 		<div class="col-sm-10">
+ 			<input type="text" id="year" name="year" placeholder="Enter The Year" class="form-control"  ng-model="comic.year">
+ 		</div>
+ 	</div>
+ 	<div id="submit-button" class="form-group row">
+ 		<div class="col-sm-2">
+ 			<button id="add-comic-button" class="btn-success btn" ng-click="addComicBook(comic)">Submit</button>
+ 		</div>
+	</div>
+</form>
+<div>
+	{{message}}
+</div>
+</div>

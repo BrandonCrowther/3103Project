@@ -1,30 +1,12 @@
 (function(angular){
 	var app = angular.module('BaseApp', []);
 
-	app.directive('includeReplace', function () {
-		return {
-			require: 'ngInclude',
-			restrict: 'A', /* optional */
-			link: function (scope, el, attrs) {
-				el.replaceWith(el.children());
-			}
-		};
-	});
-
-	app.filter("trust", ['$sce', function($sce) {
-		return function(htmlCode){
-			return $sce.trustAsHtml(htmlCode);
-		}}]
-	); //remove later
-
 	app.controller('BaseController', function($scope, $http, $sce) {
-		$http({
-			method: 'GET',
-			url: urlFor("/validate_login"),
-			data: {}
-		}).success(function (result) {
-			$scope.body = result
-		});
+
+		$scope.getView = function(endpoint){
+			$scope.body = urlFor("/" + endpoint);
+		};
+		$scope.body = urlFor('/validate_login');
 
 		$scope.logout = function(){
 			$http({
@@ -88,7 +70,6 @@
 						name: ele['first_name'] + " " + ele['last_name']
 					});
 			});
-			console.log(writers);
 			$scope.writers = writers;
 		});
 		$http({
@@ -135,32 +116,30 @@
 
 	app.controller('AddBookController', function($scope, $http, $sce){
 		$scope.book_message = "";
-		$scope.writers = function(){
+		$scope.writers = [];
+		$scope.series = [];
 			$http({
 				method: 'GET',
 				url: urlFor("/writers"),
 				data: {}
 			}).success(function (result) {
-				$scope.body = result;
+				$scope.writers = result.result;
 			});
-		}
-		$scope.series = function(){
 			$http({
 				method: 'GET',
-				url: urlFor("/publishers"),
+				url: urlFor("/series"),
 				data: {}
 			}).success(function (result) {
-				$scope.body = result;
+				$scope.series = result.result;
 			});
-		}
 		$scope.addComicBook = function (comic){
 			$http({
 				method: 'POST',
 				url : urlFor("/comic"),
 				data: comic
 			}).success(function (){
-				$scope.book_message = "SUCCESS!!"
-			})
+				$scope.book_message = "Successfully added to registry!"
+			});
 		}
 	});
 
@@ -172,28 +151,27 @@
 				url: urlFor("/publishers"),
 				data: publisher
 			}).success(function (){
-				$scope.pub_message = "SUCCESS!!"
+				$scope.pub_message = "Successfully added to registry!"
 			})
 		}});
 
 	app.controller('AddSeriesController', ['$scope', '$http', function($scope, $http) {
   		$scope.series_message = "";
-  		$scope.publishers = function(){
+			$scope.publishers = [];
 			$http({
 				method: 'GET',
 				url: urlFor("/publishers"),
 				data: {}
 			}).success(function (result) {
-				$scope.body = result;
+				$scope.publishers = result.result;
 			});
-		}
 		$scope.addSeries = function (series){
 			$http({
 				method: 'POST',
 				url: urlFor("/series"),
 				data: series
 			}).success(function (){
-				$scope.series_message = "SUCCESS!!"
+				$scope.series_message = "Successfully added to registry!"
 			})
 		}
 	}]);
@@ -206,7 +184,7 @@
 				url: urlFor("/publishers"),
 				data: writer
 			}).success(function (){
-				$scope.writer_message = "SUCCESS!!"
+				$scope.writer_message = "Successfully added to registry!"
 			})
 	 	}
 	}]);

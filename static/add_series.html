@@ -1,5 +1,5 @@
-<h1>Add Series</h1>
-<div ng-controller="AddSeriesController">
+<h2>Add Series</h2>
+<div ng-controller="AddSeriesController" class="panel panel-default" style="padding:10px;">
 	<form id="AddSeriesForm">
 		<div id="name-group" class="form-group row">
 			<label for="name" class="control-label col-sm-2">Name: </label>
@@ -34,8 +34,8 @@
 		<div id="publisher-group" class="form-group row">
 			<label for="publisher" class="control-label col-sm-2">Publisher: </label>
 			<div class="col-sm-10">
-				<select required name="choosePublisher" 
-						ng-model="series.publisher" 
+				<select required name="choosePublisher"
+						ng-model="series.publisher_id"
 						ng-options="item.id as item.name for item in publishers track by item.id"
 						class="input-clarge ng-pristine ng-valid"><option value="">Select a Publisher</option></select>
 			</div>
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 	</form>
-</div>
-<div>
-	{{series_message}}
+	<div>
+		{{series_message}}
+	</div>
 </div>

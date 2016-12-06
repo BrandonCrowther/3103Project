@@ -19,15 +19,20 @@
       </div>
       <div>
         <ul class="nav navbar-nav">
-          <li class="active">
-            <a href="#" ng-click="">
+          <li>
+            <a href="#" ng-click="getView('validate_login')">
               <strong>View Collection</strong>
             </a>
           </li>
-          <li>
-            <a href="#" ng-click="">
-              <strong>Manage Collection</strong>
-            </a>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>Manage Collection</strong>
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#" ng-click="getView('view_add_comic_book')">Add a Comic</a></li>
+              <li><a href="#" ng-click="getView('view_add_publisher')">Add a New Publisher</a></li>
+              <li><a href="#" ng-click="getView('view_add_series')">Add a Series</a></li>
+              <li><a href="#" ng-click="getView('view_add_writer')">Add a Writer</a></li>
+            </ul>
           </li>
           <li>
             <a href="#" ng-click="logout()">
@@ -38,7 +43,7 @@
       </div>
     </nav>
     <div>
-         <ng-include src="'/validate_login'"></ng-include>
+         <ng-include src="body"></ng-include>
     </div>
   </div>
 </div>

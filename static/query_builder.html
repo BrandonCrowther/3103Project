@@ -29,7 +29,7 @@
         </form>
         <form  ng-show="form == 'series'">
           <label>Filter Comics by Series</label>
-          <select id="writer_list" name="writer" required ng-model="series" ng-options = "item.id as item.name for item in series"></select>
+          <select id="series_list" name="series" required ng-model="series" ng-options = "item.id as item.name for item in serieses"></select>
           <button type="button" class="btn btn-success" ng-click="forSeries(series)">View<span class="fa fa-arrow-right"></span></button>
         </form>
       </div>

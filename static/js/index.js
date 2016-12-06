@@ -47,7 +47,7 @@
 	app.controller('GetController', function($scope, $http, $sce) {
 		$scope.publishers =  [];
 		$scope.writers = [];
-		$scope.series = [];
+		$scope.serieses = [];
 		$scope.comics = [];
 
 		$http({
@@ -77,7 +77,7 @@
 			url: urlFor("/series"),
 			data: {}
 		}).success(function (result) {
-			$scope.series = result.result;
+			$scope.serieses = result.result;
 		});
 
 
